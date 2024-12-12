@@ -20,21 +20,35 @@ public enum Rama
         this.setOrden(orden);
     }
 
-//    public static Rama asignarRama(String nombreRama)
-//    {
-//        nombreRama = nombreRama.toLowerCase(); //Así no hay confusiones por mayúsculas o minúsculas.
-//        Rama rama;
-//        switch (nombreRama){
-//            case "humanidades":
-//                rama = HUMANIDADES;
-//                break;
-//            case "exactas":
-//                rama = EXACTAS;
-//                break;
-//            case "economicas":
-//                rama = econ
-//        }
-//    }
+    public static Rama asignarRama(String nombreRama)
+    {
+        nombreRama = nombreRama.toLowerCase(); //Así no hay confusiones por mayúsculas o minúsculas.
+        Rama rama = OTRO;
+        switch (nombreRama){
+            case "humanidades":
+                rama = HUMANIDADES;
+                break;
+            case "ciencias exactas":
+                rama = EXACTAS;
+                break;
+            case "ciencias economicas":
+                rama = ECONOMICAS;
+                break;
+            case "arte":
+                rama = ARTE;
+                break;
+            case "educacion fisica":
+                rama = EDUCACIONFISICA;
+                break;
+            case "lengua y literatura":
+                rama = LENGUA;
+                break;
+            case "otro":
+                rama = OTRO;
+                break;
+        }
+        return rama;
+    }
 
     public String getNombre() {
         return nombre;

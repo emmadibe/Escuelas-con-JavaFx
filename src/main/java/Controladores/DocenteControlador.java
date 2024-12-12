@@ -5,15 +5,20 @@ import ClasesPrincipales.Docente;
 import Interfaces.Controladores;
 import Interfaces.Modelos;
 import Modelos.General;
+import Modelos.DocenteModelo;
+
+import javax.print.Doc;
 
 public class DocenteControlador implements Controladores<Docente>
 {
+    DocenteModelo docenteModelo = new DocenteModelo();
     @Override
     public void agregarUnRegistro(Docente docente)
     {
         if(!existeTabla()){
-
+            this.crearTabla();
         }
+        docenteModelo.agregarRegistroBDD(docente);
     }
 
     @Override
@@ -25,7 +30,7 @@ public class DocenteControlador implements Controladores<Docente>
     @Override
     public void crearTabla()
     {
-
+        docenteModelo.crearTablaBDD();
     }
 
     @Override
@@ -39,8 +44,20 @@ public class DocenteControlador implements Controladores<Docente>
     }
 
     @Override
-    public void existeRegistro(Docente docente) {
+    public int traerIdUltimoRegistro() {
+        return 0;
+    }
 
+    @Override
+    public Docente traerRegistroAPartirDeID(int id) {
+        Docente docente = docenteModelo.traerRegistroAPartirDeIDBDD(id);
+        return docente;
+    }
+
+    @Override
+    public boolean existeRegistro(Docente docente)
+    {
+        return docenteModelo.existeRegistroBDD(docente);
     }
 
     @Override
@@ -49,8 +66,13 @@ public class DocenteControlador implements Controladores<Docente>
     }
 
     @Override
-    public void traerUnRegistro() {
-
+    public Docente traerUnRegistro(Docente docente)
+    {
+        Docente docenteConTodosLosDatos = null;
+        if(this.existeRegistro(docente)){
+            docenteConTodosLosDatos = docenteModelo.traerRegistroBDD(docente);
+        }
+        return docenteConTodosLosDatos;
     }
 
 }

@@ -2,6 +2,7 @@ package ClasesPrincipales;
 
 public class Persona
 {
+    protected int ID;
     protected String nombre;
     protected String apellido;
     protected String dni;
@@ -46,5 +47,13 @@ public class Persona
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 }

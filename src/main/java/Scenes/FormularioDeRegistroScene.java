@@ -1,12 +1,18 @@
 package Scenes;
 
+import ClasesPrincipales.Docente;
+import Controladores.DocenteControlador;
+import ENUMS.Rama;
+import Interfaces.Escenas;
 import NodosControladores.MetodosGeneralesFx;
+import Ventanas.Inicio;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-public class FormularioDeRegistroScene extends VBox
+public class FormularioDeRegistroScene extends VBox implements Escenas
 {
     private TextField displayEmail;
     private TextField displayDNI;
@@ -101,8 +107,22 @@ public class FormularioDeRegistroScene extends VBox
         Scene scene = new Scene(this.getvBox(), 800, 600);
 
         ////////////////////////MANEJADORES DE EVENTOS:
+        //Botón cancelar:
+        buttonCancelar.setOnAction(e -> {
+            Stage stage = (Stage)scene.getWindow();
+            LoginScene loginScene = new LoginScene();
+            stage.setScene(loginScene.crear());
+        });
+
+        //Botón crear usuario:
         buttonCrearUsuario.setOnAction(e -> {
-            System.out.println("holaaa");
+            Rama rama = Rama.asignarRama(toggleGroup.getToggles().toString()); //Asigno la rama.
+            Docente docente = new Docente(displayNombre.getText(), displayApellido.getText(), displayDNI.getText(), displayEmail.getText(), 28, rama, displayPassword.getText()); //Instancio un Docente. Con el método getText(), obtengo el valor ingresado por el usuairo en los displays.
+            DocenteControlador docenteControlador = new DocenteControlador();
+            docenteControlador.agregarUnRegistro(docente); //Creo un registro en la base de datos.
+            Stage stage = (Stage) scene.getWindow(); //Con el método getWindow() obtengo la ventana actual en la que estoy.
+            LoginScene loginScene = new LoginScene();
+            stage.setScene(loginScene.crear()); //A la ventana le asigno la escena de logueo.
         });
 
         return scene;

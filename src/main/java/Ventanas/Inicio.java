@@ -1,19 +1,20 @@
 package Ventanas;
 
-import Scenes.FormularioDeRegistroScene;
+import ClasesPrincipales.ArrayListGenerico;
+import ClasesPrincipales.TraerTodo;
+import Controladores.TraerTodoControlador;
+import Excepciones.ArrayListVacioException;
 import Scenes.LoginScene;
 import com.ecodeup.jdbc.Conexion;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import javax.persistence.criteria.CriteriaBuilder;
-
 public class Inicio extends Application
 {
     public static void main(String[] args)
     {
-        Conexion.getConnection(); //Me conecto a la base de datos. Si no existe, la creo.
+        Conexion.getConnection(); //Me conecto a la base de datos. Si no existe, la creo.we
         launch(args);
     }
     @Override
@@ -30,19 +31,5 @@ public class Inicio extends Application
         stage.setTitle("LoginScene"); //Seteo un título a mi ventana(stage).
         /////////////////////////////Muestro:
         stage.show();
-
-
-        /////////////////MANEJADORES DE EVENTOS
-        //Aquí debo poner sí o sí todos los eventos que impliquen un cambio de escena.
-                            //Manejadores de eventos de LoginScene
-        FormularioDeRegistroScene crearUsuario = new FormularioDeRegistroScene();
-        loginScene.getButtonCrearUsuario().setOnAction(e -> {
-            Scene newScene = crearUsuario.crear(); //Creo la nueva escena.
-            stage.setScene(newScene); // Seteo la nueva escena en mi ventana.
-        });
-                            //Manejadores de eventos de FormularioDeRegistrosScene
-        crearUsuario.getButtonCancelar().setOnAction(e -> {Scene scene2 = loginScene.crear();
-            stage.setScene(scene);
-        });
     }
 }

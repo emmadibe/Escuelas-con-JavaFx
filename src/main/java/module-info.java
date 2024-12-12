@@ -12,6 +12,10 @@ module org.example.tpfinalconjavafx {
     requires com.almasb.fxgl.all;
     requires java.sql;
     requires java.persistence;
+    requires net.bytebuddy;
+    requires java.desktop;
+    requires org.hibernate.orm.core;
+    requires jdk.jfr;
 
     opens org.example.tpfinalconjavafx to javafx.fxml;
     exports org.example.tpfinalconjavafx;
@@ -19,4 +23,7 @@ module org.example.tpfinalconjavafx {
     opens Scenes to javafx.fxml;
     // Exporta el paquete Ventanas para que sea accesible por javafx.graphics
     exports Ventanas to javafx.graphics;
+
+    opens ClasesPrincipales to javafx.base; // Abre el paquete a javafx.base
+
 }

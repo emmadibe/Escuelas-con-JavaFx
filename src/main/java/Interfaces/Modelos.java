@@ -8,7 +8,9 @@ public interface Modelos<T>
     public void existeTablaBDD();
     public void borrarRegistroBDD(T t);
     public void editarRegistroBDD(T t);
-    public T traerRegistroBDD(int id); //Siempre voy a necesitar, en algún momento, traerme algún registro de la base de datos. Traerme un docente, un curso, unalumno, un examen, etc.
-    public ArrayListGenerico traerTodosBDD();
+    public T traerRegistroBDD(T t); //Siempre voy a necesitar, en algún momento, traerme algún registro de la base de datos. Traerme un docente, un curso, unalumno, un examen, etc.
+    public ArrayListGenerico traerTodosBDD(int id);
     public boolean existeRegistroBDD(T t);
+    public int traerIdUltimoRegistroBDD();
+    public T traerRegistroAPartirDeIDBDD(int id);
 }

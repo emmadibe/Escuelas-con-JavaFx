@@ -6,8 +6,20 @@ import Interfaces.ClasesGenerales;
 public class Docente extends Persona implements ClasesGenerales<Docente>
 {
     protected Rama rama;
+    protected String password;
 
-    public Docente(String nombre, String apellido, String dni, String email, int edad, Rama rama)
+    public Docente(int id, String nombre, String apellido, String dni, String email, int edad, Rama rama, String password)
+    {
+        this.setID(id);
+        this.setRama(rama);
+        this.setDni(dni);
+        this.setApellido(apellido);
+        this.setEmail(email);
+        this.setNombre(nombre);
+        this.setEdad(edad);
+        this.setPassword(password);
+    }
+    public Docente(String nombre, String apellido, String dni, String email, int edad, Rama rama, String password)
     {
         this.setRama(rama);
         this.setDni(dni);
@@ -15,17 +27,25 @@ public class Docente extends Persona implements ClasesGenerales<Docente>
         this.setEmail(email);
         this.setNombre(nombre);
         this.setEdad(edad);
+        this.setPassword(password);
+    }
+
+    public Docente(String email, String password)
+    {
+        this.setPassword(password);
+        this.setEmail(email);
     }
     @Override
-    public void imprimirUnaInstancia(Docente docente)
+    public void imprimirUnaInstancia()
     {
         System.out.println("----------------------------");
-        System.out.println("Nombre: " + docente.getNombre());
-        System.out.println("Apellido: " + docente.getApellido());
-        System.out.println("DNI: " + docente.getDni());
-        System.out.println("Edad: " + docente.getEdad());
-        System.out.println("Email: " + docente.getEmail());
-        System.out.println("Rama: " + docente.getRama());
+        System.out.println("ID: " + this.getID());
+        System.out.println("Nombre: " + this.getNombre());
+        System.out.println("Apellido: " + this.getApellido());
+        System.out.println("DNI: " + this.getDni());
+        System.out.println("Edad: " + this.getEdad());
+        System.out.println("Email: " + this.getEmail());
+        System.out.println("Rama: " + this.getRama());
         System.out.println("----------------------------");
     }
 
@@ -35,5 +55,13 @@ public class Docente extends Persona implements ClasesGenerales<Docente>
 
     public void setRama(Rama rama) {
         this.rama = rama;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
