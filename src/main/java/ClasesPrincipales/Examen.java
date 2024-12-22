@@ -25,6 +25,16 @@ public class Examen implements ClasesGenerales<Examen>
     }
 
     @Override
+    public String toString() {
+        return "Examen{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", numeroExamen=" + numeroExamen +
+                ", cursoID=" + cursoID +
+                '}';
+    }
+
+    @Override
     public void imprimirUnaInstancia()
     {
 

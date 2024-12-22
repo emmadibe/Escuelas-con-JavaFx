@@ -37,6 +37,7 @@ public class VerTodosLosCursosScene extends VBox implements Escenas
         /////////////////////////////////LAYOUTS:
         //Instancio layout Vbox
         this.setvBox(new VBox(10)); //10px es la distancia entre los nodos del layout
+        this.getvBox().getStyleClass().add("vbox-background"); //Le agrego los estilos, los cuales losconfiguro en mi archivo css style.css.
 
         //////////////////////////////////NODOS
         //label
@@ -62,7 +63,8 @@ public class VerTodosLosCursosScene extends VBox implements Escenas
 
         //////////////////////////////////ESCENA
         Scene scene = new Scene(this.getvBox(), 800, 600);
-
+        //Le seteo la ruta de mi archivo css para aplicarle estilos a mi escena:
+        scene.getStylesheets().add(getClass().getResource("/Estilos/styles.css").toExternalForm());
         ////////////////////////////////////MANEJO DE EVENTOS:
         //Button volver:
         this.getButtonVolver().setOnAction(e -> {

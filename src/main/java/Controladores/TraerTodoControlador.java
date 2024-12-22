@@ -1,75 +1,107 @@
 package Controladores;
 
 import ClasesPrincipales.ArrayListGenerico;
-import ClasesPrincipales.ObservableListGenerico;
 import ClasesPrincipales.TraerTodo;
+import ClasesPrincipales.TraerTodoLaParteExamenes;
+import ClasesPrincipales.TraerTodoPasandoNotasADiccionario;
 import Modelos.TraerTodoModelo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class TraerTodoControlador
-{
-    private int cursoID;
-    private TableView<TraerTodo> todoTableView;
-    private ObservableList<TraerTodo> observableList; //Es como un arrayList de JavaFX. agregamos los elementos que queremos ver en la tabla y luego los seteamos en la tabla.
-    private TableColumn<TraerTodo, String> colNombreAlumno;
-    private TableColumn<TraerTodo, Integer> colNota;
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
-    public TraerTodoControlador(int cursoID)
-    {
+public class TraerTodoControlador {
+    private int cursoID;
+    private TableView<TraerTodoPasandoNotasADiccionario> todoTableView;
+    private ObservableList<TraerTodoPasandoNotasADiccionario> observableList;
+    private TableColumn<TraerTodoPasandoNotasADiccionario, String> colNombreAlumno;
+    private ArrayListGenerico<TraerTodo> arrayListTraerTodo;
+    private ArrayListGenerico<TableColumn<TraerTodoPasandoNotasADiccionario, HashMap<String, Integer>>> arrayListColumnas;
+    private ArrayListGenerico<TraerTodoPasandoNotasADiccionario> TTPND;
+
+    public TraerTodoControlador(int cursoID) {
         this.setCursoID(cursoID);
     }
 
-    public void initialize() //Seteamos qué columna va a tener cada cosa.
-    {
-        this.setTodoTableView(new TableView<>());
-        this.observableList = FXCollections.observableArrayList(); //Estoy inicializando el "ArrayList"de Java FX. Así es como se inicializa el arrayList de JavaFx, sin la palabra reservada new. Medio raro.
-        //Ahora voy a decirle a las columnas qué atributo es lo que van a atrapar:
-        this.setColNombreAlumno(new TableColumn("nombreYapellido"));
-        this.colNombreAlumno.setCellValueFactory(new PropertyValueFactory<>("nombreYapellido")); //Esta columna atrapará el atributo nombreYapellido de TraerTodo. Sabe que es un atributo de una instancia de TraerTodo porque así se lo indiqué en el ObservableList.
-        this.setColNota(new TableColumn("nota"));
-        this.colNota.setCellValueFactory(new PropertyValueFactory<>("nota"));
-        //Agrego las columnas a la tabla:
-        this.todoTableView.getColumns().addAll(this.colNombreAlumno, this.colNota);
+    public void initialize() {
+        this.setTodoTableView(new TableView<>()); //Inicializo la tabla. Este es el nodo que utilizaré para mostrar mis datos.
+        this.observableList = FXCollections.observableArrayList(); //Inicializo el ObservableList
+        TraerTodoPasandoNotasADiccionario TTPasandoNotas = new TraerTodoPasandoNotasADiccionario();//Instancio. Luego, en TTPasandoNotas tendré mis registros.
+
+        // Configuración de la columna "Nombre y apellido"
+        this.setColNombreAlumno(new TableColumn<>("Nombre y apellido")); //A este columna le seteo un nombre cableado porque ya sé que debe tener ese nombre
+        this.colNombreAlumno.setCellValueFactory(new PropertyValueFactory<>("nombreYapellido")); //Así, los valores de los registros de la columna Nombre y apellido serán los que retorne el getter nombreYapellido.
+
+        // Cargar datos y crear columnas dinámicas
+        this.setArrayListTraerTodo(TraerTodoModelo.traerATodos(this.getCursoID())); //Ya tengo todos los registros de mi BDD en el formato original, que no sirve.
+        this.setTTPND(TTPasandoNotas.pasarNotasADiccionario(this.getArrayListTraerTodo())); //Convierto el arrayList original a otro nuevo, con un mejor formato en donde tengo tantos registros como alumnos posea el curso. Es un formato de guardar los datos más sencillo para trabajar.
+        this.setArrayListColumnas(this.crearColumnasDinamicas()); //Tengo mis columnas, NO mis registros. O sea, los nombres de las columnas sin valores en las filas.
+
+        // Agregar columnas a la tabla
+        this.agregarColumnasALaTablaDeFormaDinamica();
     }
 
-    public TableView<TraerTodo> agregarDatosALaTabla()
-    {
-        //Inicializo:
-        this.initialize();
-        //Me traigo los datos:
-        ArrayListGenerico<TraerTodo> arrayListTraerTodo = TraerTodoModelo.traerATodos(this.getCursoID()); //Ya tengo todos los datos en mi arrayList.
-        System.out.println("El curso id es: " + this.getCursoID());
-        //Paso los datos al observableArrayList y los seteo en la tabla.
-        for(int i = 0; i < arrayListTraerTodo.tamanio(); i ++){
-            TraerTodo traerTodo = arrayListTraerTodo.retornarUnElementoPorPosicion(i);
-            this.observableList.add(traerTodo); //Ya tengo el elemento en la posición i agregado. Y así, en cada ciclo va agregando.
+    public void agregarColumnasALaTablaDeFormaDinamica() {
+        this.todoTableView.getColumns().add(this.getColNombreAlumno()); //Esa columna ya sé que la debo tener. Es la columna "nombre alumno"
+        for (int i = 0; i < this.getArrayListColumnas().tamanio(); i++) { //Voy agregando columnas a mi tabla. Cada columna será el nombre de un examen.
+            this.todoTableView.getColumns().add(this.getArrayListColumnas().retornarUnElementoPorPosicion(i));  //En cada bucle agrego una nueva columna a mi tabla.
         }
-        //Agrego el observableList a la tabla:
-        this.todoTableView.setItems(this.observableList);
+    }
+
+    public ArrayListGenerico<TableColumn<TraerTodoPasandoNotasADiccionario, HashMap<String, Integer>>> crearColumnasDinamicas() { //En este método voy a crear las columnas de mi tabla correspondientes a cada examen. Un examen es igual a una columna.
+        ArrayListGenerico<TableColumn<TraerTodoPasandoNotasADiccionario, HashMap<String, Integer>>> arrayListColumnas = new ArrayListGenerico<>(); //En este arrayList, cada elemento es una columna
+        ArrayListGenerico<TraerTodoLaParteExamenes> arrayListExamen = new ArrayListGenerico<>(); //ArayList de examen. Es un arraylist auxiliar que cree para garantizar que no se repitan olumnas-exámenes en mi tabla. 
+
+        for (int i = 0; i < this.getArrayListTraerTodo().tamanio(); i++) {
+            String nombreYnumeroExamen = this.getArrayListTraerTodo().retornarUnElementoPorPosicion(i).getNombreYnumeroExamen();
+            TraerTodoLaParteExamenes traerTodoLaParteExamenes = new TraerTodoLaParteExamenes(nombreYnumeroExamen);
+
+            if (!arrayListExamen.contieneElemento(traerTodoLaParteExamenes)) {
+                TableColumn<TraerTodoPasandoNotasADiccionario, HashMap<String, Integer>> columnaNueva = new TableColumn<>(nombreYnumeroExamen);
+                columnaNueva.setCellValueFactory(new PropertyValueFactory<>("notamapa"));
+
+                columnaNueva.setCellFactory(column -> new TableCell<TraerTodoPasandoNotasADiccionario, HashMap<String, Integer>>() {
+                    @Override
+                    protected void updateItem(HashMap<String, Integer> item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty || item == null) {
+                            setText(null);
+                        } else {
+                            TraerTodoPasandoNotasADiccionario objetoActual = getTableView().getItems().get(getIndex());
+                            Integer nota = objetoActual.getNotamapa().get(nombreYnumeroExamen);
+                            setText(nota != null ? String.valueOf(nota) : null);
+                        }
+                    }
+                });
+
+                arrayListColumnas.agregar(columnaNueva);
+                arrayListExamen.agregar(traerTodoLaParteExamenes);
+            }
+        }
+        return arrayListColumnas;
+    }
+
+    public TableView<TraerTodoPasandoNotasADiccionario> agregarDatosALaTabla() {
+        this.initialize();
+
+        for (int i = 0; i < this.getTTPND().tamanio(); i++) { //Debo pasar todos mis registros al observableList. Pues, el nodo TableView lo que admite es observableList, que es un arraylist de JavaFx.
+            TraerTodoPasandoNotasADiccionario traerTodo = this.getTTPND().retornarUnElementoPorPosicion(i);
+            this.getObservableList().add(traerTodo);
+        }
+        // Establecer el ObservableList en la tabla
+        this.getTodoTableView().setItems(this.getObservableList());
 
         return todoTableView;
     }
 
-    public TableColumn getColNombreAlumno() {
-        return colNombreAlumno;
-    }
-
-    public void setColNombreAlumno(TableColumn colNombreAlumno) {
-        this.colNombreAlumno = colNombreAlumno;
-    }
-
-    public TableColumn getColNota() {
-        return colNota;
-    }
-
-    public void setColNota(TableColumn colNota) {
-        this.colNota = colNota;
-    }
-
+    // Getters y Setters
     public int getCursoID() {
         return cursoID;
     }
@@ -78,11 +110,51 @@ public class TraerTodoControlador
         this.cursoID = cursoID;
     }
 
-    public TableView<TraerTodo> getTodoTableView() {
+    public TableView<TraerTodoPasandoNotasADiccionario> getTodoTableView() {
         return todoTableView;
     }
 
-    public void setTodoTableView(TableView<TraerTodo> todoTableView) {
+    public void setTodoTableView(TableView<TraerTodoPasandoNotasADiccionario> todoTableView) {
         this.todoTableView = todoTableView;
+    }
+
+    public ObservableList<TraerTodoPasandoNotasADiccionario> getObservableList() {
+        return observableList;
+    }
+
+    public void setObservableList(ObservableList<TraerTodoPasandoNotasADiccionario> observableList) {
+        this.observableList = observableList;
+    }
+
+    public TableColumn<TraerTodoPasandoNotasADiccionario, String> getColNombreAlumno() {
+        return colNombreAlumno;
+    }
+
+    public void setColNombreAlumno(TableColumn<TraerTodoPasandoNotasADiccionario, String> colNombreAlumno) {
+        this.colNombreAlumno = colNombreAlumno;
+    }
+
+    public ArrayListGenerico<TraerTodo> getArrayListTraerTodo() {
+        return arrayListTraerTodo;
+    }
+
+    public void setArrayListTraerTodo(ArrayListGenerico<TraerTodo> arrayListTraerTodo) {
+        this.arrayListTraerTodo = arrayListTraerTodo;
+    }
+
+    public ArrayListGenerico<TableColumn<TraerTodoPasandoNotasADiccionario, HashMap<String, Integer>>> getArrayListColumnas() {
+        return arrayListColumnas;
+    }
+
+    public void setArrayListColumnas(ArrayListGenerico<TableColumn<TraerTodoPasandoNotasADiccionario, HashMap<String, Integer>>> arrayListColumnas) {
+        this.arrayListColumnas = arrayListColumnas;
+    }
+
+    public ArrayListGenerico<TraerTodoPasandoNotasADiccionario> getTTPND() {
+        return TTPND;
+    }
+
+    public void setTTPND(ArrayListGenerico<TraerTodoPasandoNotasADiccionario> TTPND) {
+        this.TTPND = TTPND;
     }
 }

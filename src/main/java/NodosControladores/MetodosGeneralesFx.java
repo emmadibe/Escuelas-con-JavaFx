@@ -3,7 +3,6 @@ package NodosControladores;
 import ClasesPrincipales.Curso;
 import ClasesPrincipales.Estudiante;
 import ClasesPrincipales.Examen;
-import Scenes.AgregarAlumnosScene;
 import Scenes.VerCursoScene;
 import Scenes.VerExamenScene;
 import Ventanas.AgregarNotaStage;

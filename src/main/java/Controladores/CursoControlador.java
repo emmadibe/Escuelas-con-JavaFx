@@ -5,6 +5,7 @@ import ClasesPrincipales.Curso;
 import ClasesPrincipales.Docente;
 import Interfaces.Controladores;
 import Modelos.CursoModelo;
+import Modelos.ExamenModelo;
 import Modelos.General;
 
 public class CursoControlador implements Controladores<Curso>
@@ -20,7 +21,7 @@ public class CursoControlador implements Controladores<Curso>
 
     @Override
     public Curso traerRegistroAPartirDeID(int id) {
-        return null;
+        return cursoModelo.traerRegistroAPartirDeIDBDD(id);
     }
 
     public CursoControlador(Docente docente)
@@ -44,6 +45,11 @@ public class CursoControlador implements Controladores<Curso>
         ArrayListGenerico arrayListGenerico = new ArrayListGenerico<Curso>();
         arrayListGenerico = cursoModelo.traerTodosBDD(this.getDocenteID());
         return arrayListGenerico;
+    }
+
+    public static boolean existenExamenesEnElCurso(int cursoID)
+    {
+        return ExamenModelo.existenRegistrosParaUnCurso(cursoID);
     }
 
     @Override

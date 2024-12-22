@@ -33,7 +33,7 @@ public class ActualizarNotaScene extends VBox implements Escenas
     {
         ////////////////////////////////lAYOUTS
         this.setvBox(new VBox(10));
-
+        this.getvBox().getStyleClass().add("vbox-background"); //Le agrego los estilos, los cuales losconfiguro en mi archivo css style.css.
         ////////////////////////////////NODOS
         //label
         this.labelActualizarNota = MetodosGeneralesFx.crearLabel("Nota");
@@ -49,13 +49,15 @@ public class ActualizarNotaScene extends VBox implements Escenas
         this.getvBox().getChildren().addAll(this.labelActualizarNota, this.getSpinnerActualizarNota(), this.getHboxBotones());
         ///////////////////////////////////ESCENA
         Scene scene = new Scene(this.getvBox(), 400, 200);
-
+        //Le seteo la ruta de mi archivo css para aplicarle estilos a mi escena:
+        scene.getStylesheets().add(getClass().getResource("/Estilos/styles.css").toExternalForm());
         ///////////////////////////////////MANEJADORES DE EVENTOS:
         //Botón actualizar nota
         this.getButtonActualizarNota().setOnAction(e -> {
             int nota = (int)this.getSpinnerActualizarNota().getValue();
             this.setNota(nota);
             TablaIntermediaEstudianteXExamenControlador TIEXEC = new TablaIntermediaEstudianteXExamenControlador(this.getEstudianteID(), this.getExamenID(), this.getNota());
+            System.out.println("EstudianteID " + TIEXEC.getEstudianteID() + "examen ID " + TIEXEC.getExamenID() + "nota " + TIEXEC.getNota());
             TIEXEC.actualizarNota();
             //Cerrar la ventana:
             Stage stage = (Stage) scene.getWindow();

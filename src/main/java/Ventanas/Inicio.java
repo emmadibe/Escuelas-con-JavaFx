@@ -8,6 +8,7 @@ import Scenes.LoginScene;
 import com.ecodeup.jdbc.Conexion;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Inicio extends Application
@@ -26,6 +27,8 @@ public class Inicio extends Application
         //Instancio una escena. Mi primer escena:
         Scene scene = loginScene.crear();
         /////////////////////////Trabajo con la VENTANA
+        //Le agrego un ícono a mi ventana:
+        stage.getIcons().add(new Image("A:\\Dev\\UTN\\carrera\\Programación 2 Java\\JavaFx\\probarJavaFx\\TpFinalCOnJavaFx\\xardas.jpeg"));
         //Agrego mi escena a mi VENTANA(Stage). Establezco la escena de logueo como mi escena actual en mi ventana:
         stage.setScene(scene);
         stage.setTitle("LoginScene"); //Seteo un título a mi ventana(stage).

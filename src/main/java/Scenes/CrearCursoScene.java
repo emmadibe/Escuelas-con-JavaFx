@@ -45,6 +45,7 @@ public class CrearCursoScene extends VBox implements Escenas
         //Uso un layouts VBox
         vBox = new VBox();
         this.getvBox().setSpacing(10); //Seteo la distancia entre los nodos del layouts.
+        this.getvBox().getStyleClass().add("vbox-background"); //Le agrego los estilos, los cuales losconfiguro en mi archivo css style.css.
 
         /////////////////////////////////NODOS
         //Etiquetas (Labels) y camos de texto (TextFields).
@@ -83,7 +84,8 @@ public class CrearCursoScene extends VBox implements Escenas
         /////////////////////////////ESCENA
         //Creo/instancio mi escena y le agrego el layouts.
         Scene scene = new Scene(this.getvBox(), 800, 600);
-
+        //Le seteo la ruta de mi archivo css para aplicarle estilos a mi escena:
+        scene.getStylesheets().add(getClass().getResource("/Estilos/styles.css").toExternalForm());
         /////////////////////////////MANEJADORES DE EVENTOS:
         //Botón para crear el curso:
         buttonCrearCurso.setOnAction(e -> {

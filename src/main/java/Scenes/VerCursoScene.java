@@ -3,11 +3,13 @@ package Scenes;
 import ClasesPrincipales.Curso;
 import ClasesPrincipales.Docente;
 import ClasesPrincipales.TraerTodo;
+import ClasesPrincipales.TraerTodoPasandoNotasADiccionario;
 import Controladores.DocenteControlador;
 import Controladores.TraerTodoControlador;
 import Interfaces.Escenas;
 import NodosControladores.MetodosGeneralesFx;
-import Ventanas.TablaEstudiantesStage;
+import Ventanas.AgregarAlumnoStage;
+import Ventanas.AgregarNotaStage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -28,7 +30,7 @@ public class VerCursoScene extends VBox implements Escenas
     private Button buttonAgregarExamen;
     private Button buttonVolver;
     private Button buttonVerExamenes;
-    private TableView<TraerTodo> tableView; //tableView es un nodo más.
+    private TableView<TraerTodoPasandoNotasADiccionario> tableView; //tableView es un nodo más.
 
     public VerCursoScene(Curso curso)
     {
@@ -44,6 +46,7 @@ public class VerCursoScene extends VBox implements Escenas
         ///////////////////////////////////////////LAYOUTS
         //Uso un layouts VBox
         this.setvBox(new VBox(10)); //Instancio mi layouts Vbox. 10px de distancia entre los elementos.
+        this.getvBox().getStyleClass().add("vbox-background"); //Le agrego los estilos, los cuales losconfiguro en mi archivo css style.css.
 
         /////////////////////////////////////////NODOS
         //LabelCurso
@@ -75,13 +78,18 @@ public class VerCursoScene extends VBox implements Escenas
 
         ////////////////////////////////////////ESCENA
         Scene scene = new Scene(this.getvBox(), 800, 600);
-
+        //Le seteo la ruta de mi archivo css para aplicarle estilos a mi escena:
+        scene.getStylesheets().add(getClass().getResource("/Estilos/styles.css").toExternalForm());
         /////////////////////////////////////////MANEJADORES DE EVENTOS:
         //Agregar alumnos:
         this.getButtonAgregarAlumnos().setOnAction(e -> {
-            AgregarAlumnosScene agregarAlumnosScene = new AgregarAlumnosScene(this.getCurso());
-            Stage stage = (Stage)scene.getWindow();
-            stage.setScene(agregarAlumnosScene.crear());
+            Stage stage = new Stage();
+            AgregarAlumnoStage agregarAlumnoStage = new AgregarAlumnoStage(this.getCurso());
+            try {
+                agregarAlumnoStage.start(stage);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
         });
         //Volver:
         this.getButtonVolver().setOnAction(e -> {

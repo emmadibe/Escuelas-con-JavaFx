@@ -9,14 +9,8 @@ import java.util.Map;
 
 public class Estudiante extends Persona implements ClasesGenerales<Estudiante>
 {
-    private StringProperty nombre;
-    private Map<String, String> notas;
+    private int  notas;
     private int examenID;
-    public Estudiante(String nombre) {
-        this.nombre = new SimpleStringProperty(nombre);
-        this.notas = new HashMap<>();
-    }
-
     public Estudiante(){}
 
     public Estudiante(String nombre, String apellido, String dni, String email, int edad)
@@ -48,27 +42,33 @@ public class Estudiante extends Persona implements ClasesGenerales<Estudiante>
         this.setExamenID(examenID);
     }
 
-    private void setExamenID(int examenID) {
+    @Override
+    public String toString() {
+        return "Estudiante{" +
+                "notas=" + notas +
+                ", examenID=" + examenID +
+                ", ID=" + ID +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", dni='" + dni + '\'' +
+                ", edad=" + edad +
+                '}';
     }
 
-    public String getNombre() {
-        return nombre.get();
+    public void setNotas(int notas) {
+        this.notas = notas;
     }
 
-    public StringProperty nombreProperty() {
-        return nombre;
-    }
-
-    public Map<String, String> getNotas() {
-        return notas;
-    }
-
-    public void agregarNota(String examen, String nota) {
-        notas.put(examen, nota);
+    public void setExamenID(int examenID) {
+        this.examenID = examenID;
     }
 
     public int getExamenID() {
         return examenID;
+    }
+
+    public int getNotas() {
+        return notas;
     }
 
     @Override

@@ -2,6 +2,7 @@ package Modelos;
 
 import ClasesPrincipales.ArrayListGenerico;
 import ClasesPrincipales.Curso;
+import ENUMS.Rama;
 import Interfaces.Modelos;
 import net.bytebuddy.matcher.StringMatcher;
 
@@ -130,8 +131,41 @@ public class CursoModelo extends General implements Modelos<Curso>
     }
 
     @Override
-    public Curso traerRegistroAPartirDeIDBDD(int id) {
-        return null;
+    public Curso traerRegistroAPartirDeIDBDD(int id)
+    {
+        Curso curso = null;
+        Connection connection = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String sql = "SELECT * FROM cursos WHERE id = ?;";
+        try {
+            connection = DriverManager.getConnection(dbURL, username, password);
+            statement = connection.createStatement();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){ //Si la consulta me trajo un registro...
+                String nombre = resultSet.getString("nombre");
+                int cantAlumnos = resultSet.getInt("cantAlumnos");
+                String escuela = resultSet.getString("escuela");
+                String materia = resultSet.getString("materia");
+                int docenteID = resultSet.getInt("docenteID");
+                curso = new Curso(id, nombre, cantAlumnos, escuela, materia, docenteID);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if(connection != null) connection.close();
+                if(statement != null) statement.close();
+                if(preparedStatement != null) preparedStatement.close();
+                if(resultSet != null) resultSet.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return curso;
     }
 
     @Override

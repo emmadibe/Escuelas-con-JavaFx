@@ -53,6 +53,15 @@ public class ArrayListGenerico<T>
         return vBox;
     }
 
+    public boolean contieneElemento(Object t)
+    {
+        boolean contiene = false;
+        if(this.arrayListgenerico.contains(t)){
+            contiene = true;
+            this.arrayListgenerico.contains(t);
+        }
+        return contiene;
+    }
     public int tamanio()
     {
         return this.arrayListgenerico.size();

@@ -47,11 +47,6 @@ public class EstudianteModelo extends General implements Modelos<Estudiante>
                 e.printStackTrace();
             }
         }
-        try{
-            arrayListEstudiantes.imprimirTodo();
-        }catch (ArrayListVacioException e){
-            e.printStackTrace();
-        }
         return arrayListEstudiantes;
     }
 

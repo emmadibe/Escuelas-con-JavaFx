@@ -45,6 +45,7 @@ public class AgregarExamenScene extends VBox implements Escenas
         /////////////////////////////////////LAYOUTS
         //Uso un layouts vbox
         this.setvBox(new VBox(10));
+        this.getvBox().getStyleClass().add("vbox-background"); //Le agrego los estilos, los cuales losconfiguro en mi archivo css style.css.
 
         //////////////////////////////////////NODOS:
         //Labels, displays y spinners.
@@ -70,7 +71,8 @@ public class AgregarExamenScene extends VBox implements Escenas
 
         ///////////////////////////////////////ESCENA
         Scene scene = new Scene(this.getvBox(), 800, 600);
-
+        //Le seteo la ruta de mi archivo css para aplicarle estilos a mi escena:
+        scene.getStylesheets().add(getClass().getResource("/Estilos/styles.css").toExternalForm());
         //////////////////////////////////MANEJADORES DE EVENTOS
         this.getButtonAgregar().setOnAction(e -> {
             EstudianteControlador estudianteControlador = new EstudianteControlador(this.getCurso().getID());

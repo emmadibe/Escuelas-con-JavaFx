@@ -13,12 +13,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.Objects;
+
+import static javafx.scene.paint.Color.MAGENTA;
 
 public class LoginScene extends GridPane implements Escenas
 {
@@ -30,6 +34,7 @@ public class LoginScene extends GridPane implements Escenas
     private Label labelErrorCredenciales;
     private Label labelLogOut;
     private Label labelEmail;
+    private Label labelUsuario;
     private Label labelPassword;
     private GridPane gridPane;
 
@@ -44,6 +49,8 @@ public class LoginScene extends GridPane implements Escenas
         gridPane.setPadding(new Insets(20)); //Seteo el padding del layout.
         gridPane.setHgap(10); //Seteo el Hgap del layouts.
         gridPane.setVgap(50); //Seteo el Vgap del layouts.
+        //Le seteo el color de fondo a mi layouts
+        gridPane.getStyleClass().add("gridpane-background"); //Configuro los estilos en mi archivo css styles.css
 
         ///////////////////////////////////////////////////////////////////////NODOS
         //Instancio mis atributos, le seteo propiedades y los agrego a mi layouts ya que son nodos o componentes:
@@ -53,20 +60,26 @@ public class LoginScene extends GridPane implements Escenas
         displayEmail.setPrefWidth(600); //Seteo ancho.
         displayPassword.setPrefWidth(600); //
 
-        gridPane.add(displayEmail, 0, 0, 4, 4);
-        gridPane.add(displayPassword, 0, 2, 4, 4);
-
+        //Label usuario
+        this.setLabelUsuario(MetodosGeneralesFx.crearLabel("Usuario"));
+        //Label password:
+        this.setLabelPassword(MetodosGeneralesFx.crearLabel("Password"));
+        //Seteo mis nodos displays y labels en mi layouts:
+        gridPane.add(this.getLabelUsuario(), 0, 0, 1, 1); // Label usuario
+        gridPane.add(displayEmail, 0, 1, 2, 1); // Display de email abajo del label
+        gridPane.add(this.getLabelPassword(), 0, 2, 1, 1); // Label de etiqueta
+        gridPane.add(displayPassword, 0, 3, 2, 1); // Display Password debajo de etiqueta.h
         //Botón Inciar Sesión
         String tagIniciarSesion = "Iniciar sesión";
         this.setButtonIniciarSesion(MetodosGeneralesFx.createButton(tagIniciarSesion, 100));
-        gridPane.add(this.getButtonIniciarSesion(), 3, 5);
+        gridPane.add(this.getButtonIniciarSesion(), 1, 5);
         GridPane.setHalignment(this.getButtonIniciarSesion(), HPos.CENTER); // Alineación horizontal al centro
         GridPane.setValignment(this.getButtonIniciarSesion(), VPos.CENTER); // Alineación vertical al centro
 
         //Botón Crear Usuario:
         String tagCrearUsuario = "Crear nuevo usuario";
         this.setButtonCrearUsuario(MetodosGeneralesFx.createButton(tagCrearUsuario, 150));
-        gridPane.add(this.getButtonCrearUsuario(), 3, 6); //Agrego el botón al layouts
+        gridPane.add(this.getButtonCrearUsuario(), 1, 6); //Agrego el botón al layouts
         GridPane.setHalignment(this.getButtonCrearUsuario(), HPos.CENTER); // Alineación horizontal al centro
         GridPane.setValignment(this.getButtonCrearUsuario(), VPos.CENTER); // Alineación vertical al centro
 
@@ -76,8 +89,8 @@ public class LoginScene extends GridPane implements Escenas
         //////////////////////////////////////////////////////////////////////////ESCENA
         //Creo/instancio mi ESCENA(Scene) y le agrego el layouts:
         Scene scene = new Scene(gridPane, 800, 600); //En el constructor de la escena paso el layout y el tamaño que deseo que tenga mi escena.
-        // scene.setFill(Color.MAGENTA); //Seteo el color de fondo de mi escena.
-
+        //Le seteo la ruta de mi archivo css para aplicarle estilos a mi escena:
+        scene.getStylesheets().add(getClass().getResource("/Estilos/styles.css").toExternalForm());
         //Label LogOut
         this.setLabelLogOut(MetodosGeneralesFx.crearLabel("labelLogOut","yellow", "10", "10"));
 
@@ -202,6 +215,14 @@ public class LoginScene extends GridPane implements Escenas
 
     public Label getLabelPassword() {
         return labelPassword;
+    }
+
+    public Label getLabelUsuario() {
+        return labelUsuario;
+    }
+
+    public void setLabelUsuario(Label labelUsuario) {
+        this.labelUsuario = labelUsuario;
     }
 
     public void setLabelPassword(Label labelPassword) {

@@ -1,11 +1,12 @@
 package Scenes;
 
-import ClasesPrincipales.Curso;
-import ClasesPrincipales.Estudiante;
-import ClasesPrincipales.TablaIntermediaEstudianteXCurso;
+import ClasesPrincipales.*;
+import Controladores.CursoControlador;
 import Controladores.EstudianteControlador;
 import Controladores.TablaIntermediaEstudianteXCursoControlador;
+import Controladores.TablaIntermediaEstudianteXExamenControlador;
 import Interfaces.Escenas;
+import Modelos.ExamenModelo;
 import NodosControladores.MetodosGeneralesFx;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -45,6 +46,7 @@ public class AgregarAlumnosScene extends VBox implements Escenas
         ////////////////////////////////LAYOUTS
         //Uso un layouts VBox
         this.setvBox(new VBox(10)); //Instancio mi layouts VBox.
+        this.getvBox().getStyleClass().add("vbox-background"); //Le agrego los estilos, los cuales losconfiguro en mi archivo css style.css.
 
         //////////////////////////////////NODOS
         this.setLabelNombre(MetodosGeneralesFx.crearLabel("Nombre"));
@@ -82,7 +84,8 @@ public class AgregarAlumnosScene extends VBox implements Escenas
 
         ///////////////////////////////ESCENA
         Scene scene = new Scene(this.getvBox(), 800, 600);
-
+        //Le seteo la ruta de mi archivo css para aplicarle estilos a mi escena:
+        scene.getStylesheets().add(getClass().getResource("/Estilos/styles.css").toExternalForm());
         ////////////////////////////////MANEJADORES DE EVENTOS
         //Botón agregar alumnos.
         this.getButtonAgregar().setOnAction(e -> {
@@ -102,6 +105,18 @@ public class AgregarAlumnosScene extends VBox implements Escenas
             TablaIntermediaEstudianteXCurso TIEXC = new TablaIntermediaEstudianteXCurso(this.getCurso().getID(), estudianteID);
             TablaIntermediaEstudianteXCursoControlador TIEXControl = new TablaIntermediaEstudianteXCursoControlador();
             TIEXControl.agregarUnRegistro(TIEXC);
+            //Debo corroborar que no haya exámenes en el curso. Si los hay, debo crear un registro en la tabla intermedia estudiantes x examen. Sino, el estudiante no aparecerá en la Table View de la escena VerCurso:
+            if(CursoControlador.existenExamenesEnElCurso(this.getCurso().getID())){ //Si hay exámenes en el curso...
+                //Debo traermelos id de todos los exámenes del curso:
+                ArrayListGenerico<Integer> arrayListEnteros = ExamenModelo.traerTodosLosIExamenesIDDeUnCurso(this.getCurso().getID()); //Tengo todos los id de todos los exámenes pertenecientes a este curso.
+                //Ahora, debo crear los registros de la tabla intermedia estudiantes x examen. Por cada examenID que haya, un registro
+                for(int i = 0; i < arrayListEnteros.tamanio(); i++){
+                    int examenID = arrayListEnteros.retornarUnElementoPorPosicion(i);
+                    TablaIntermediaEstudianteXExamen TIEXE = new TablaIntermediaEstudianteXExamen(estudianteID, examenID, 0); //EN cada bucle, una instancia
+                    TablaIntermediaEstudianteXExamenControlador TIEXEC = new TablaIntermediaEstudianteXExamenControlador();
+                    TIEXEC.agregarUnRegistro(TIEXE); //Agrego la tabla intermedia a la bdd
+                }
+            }
             //Limpio todos los display:
             MetodosGeneralesFx.limpiarInputs(this.getvBox());
         });

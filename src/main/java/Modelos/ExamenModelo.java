@@ -52,6 +52,70 @@ public class ExamenModelo extends General implements Modelos<Examen>
         return false;
     }
 
+    public static boolean existenRegistrosParaUnCurso(int cursoID)
+    {
+        boolean existe = false;
+        Connection connection = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String sql = "SELECT * FROM examenes WHERE cursoID = ? LIMIT 1;"; //Limito losresultados a 1 porque con que haya un registro ya sé que existen exámenes para ese curso. No necesito gastar más memoria al pedo.
+        try {
+            connection = DriverManager.getConnection(dbURL, username, password);
+            statement = connection.createStatement();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, cursoID);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                existe = true;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if(connection != null) connection.close();
+                if(statement != null) statement.close();
+                if(preparedStatement != null) preparedStatement.close();
+                if(resultSet != null) resultSet.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return existe;
+    }
+
+    public static ArrayListGenerico<Integer> traerTodosLosIExamenesIDDeUnCurso(int cursoID)
+    {
+        ArrayListGenerico<Integer> arrayListEnteros = new ArrayListGenerico<>();
+        Connection connection = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String sql = "SELECT id FROM examenes WHERE cursoID = ?;";
+        try {
+            connection = DriverManager.getConnection(dbURL, username, password);
+            statement = connection.createStatement();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, cursoID);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){ //mientras haya registros en el resultset...
+                int examenID = resultSet.getInt("id");
+                arrayListEnteros.agregar(examenID);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if(connection != null) connection.close();
+                if(statement != null) statement.close();
+                if(resultSet != null) resultSet.close();
+                if(preparedStatement != null) preparedStatement.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return arrayListEnteros;
+    }
     @Override
     public void existeTablaBDD() {
 
