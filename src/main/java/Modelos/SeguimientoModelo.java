@@ -5,10 +5,7 @@ import ClasesPrincipales.Seguimiento;
 import Interfaces.Modelos;
 import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class SeguimientoModelo extends  General implements Modelos<Seguimiento>
 {
@@ -42,8 +39,32 @@ public class SeguimientoModelo extends  General implements Modelos<Seguimiento>
     }
 
     @Override
-    public void agregarRegistroBDD(Seguimiento seguimiento) {
-
+    public void agregarRegistroBDD(Seguimiento seguimiento)
+    {
+        Connection connection = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        String sql = "INSERT INTO seguimientos(titulo, cuerpo, cursoID)" +
+                    "VALUES(?, ?, ?);";
+        try {
+            connection = DriverManager.getConnection(dbURL, username, password);
+            statement = connection.createStatement();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, seguimiento.getTitulo());
+            preparedStatement.setString(2, seguimiento.getCuerpo());
+            preparedStatement.setInt(3, seguimiento.getCursoID());
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if(connection != null) connection.close();
+                if(statement != null) statement.close();
+                if(preparedStatement != null) preparedStatement.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

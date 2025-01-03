@@ -1,6 +1,8 @@
 package Scenes;
 
 import ClasesPrincipales.Curso;
+import ClasesPrincipales.Seguimiento;
+import Controladores.SeguimientoControlador;
 import Interfaces.Escenas;
 import NodosControladores.MetodosGeneralesFx;
 import javafx.scene.Scene;
@@ -73,6 +75,14 @@ public class AgregarSeguimientoScene extends VBox implements Escenas
             Stage stage = (Stage) scene.getWindow();
             VerSeguimientosScene verSeguimientosScene = new VerSeguimientosScene(this.getCurso());
             stage.setScene(verSeguimientosScene.crear());
+        });
+        //Agregar seguimiento
+        this.getButtonAgregarSeguimiento().setOnAction(e -> {
+            String titulo = this.getDisplayTitulo().getText();
+            String cuerpo = this.getDisplayCuerpo().getText();
+            Seguimiento seguimiento = new Seguimiento(titulo, cuerpo, this.getCurso().getID());
+            SeguimientoControlador seguimientoControlador = new SeguimientoControlador();
+            seguimientoControlador.agregarUnRegistro(seguimiento);
         });
         return scene;
     }

@@ -7,6 +7,13 @@ public class Seguimiento
     private int id;
     private int cursoID;
 
+    public Seguimiento(String titulo, String cuerpo, int cursoID)
+    {
+        this.setTitulo(titulo);
+        this.setCuerpo(cuerpo);
+        this.setCursoID(cursoID);
+    }
+
     public String getTitulo() {
         return titulo;
     }
