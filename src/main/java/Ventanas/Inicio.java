@@ -3,6 +3,7 @@ package Ventanas;
 import ClasesPrincipales.*;
 import Controladores.*;
 import Excepciones.ArrayListVacioException;
+import Modelos.SeguimientoModelo;
 import Scenes.LoginScene;
 import com.ecodeup.jdbc.Conexion;
 import javafx.application.Application;
@@ -15,6 +16,8 @@ public class Inicio extends Application
     public static void main(String[] args)
     {
         Conexion.getConnection(); //Me conecto a la base de datos. Si no existe, la creo.we
+//        SeguimientoModelo seguimientoModelo = new SeguimientoModelo();
+//        seguimientoModelo.crearTablaBDD();
         launch(args);
     }
     @Override

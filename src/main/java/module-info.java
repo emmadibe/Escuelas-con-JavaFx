@@ -17,6 +17,7 @@ module org.example.tpfinalconjavafx {
     requires javafx.media;
     requires com.fasterxml.jackson.databind;
     requires java.sql;
+    requires java.desktop;
 
     opens org.example.tpfinalconjavafx to javafx.fxml;
     exports org.example.tpfinalconjavafx;
