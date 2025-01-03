@@ -23,7 +23,7 @@ public class SeguimientoModelo extends  General implements Modelos<Seguimiento>
                     "titulo VARCHAR(60), " +
                     "cuerpo TEXT, " +
                     "cursoID INT, " +
-                    "CONSTRAINT fk_id_curso FOREIGN KEY (cursoID) REFERENCES cursos(id) ON DELETE CASACADE ON UPDATE CASCADE" +
+                    "CONSTRAINT fk_id_curso_seguimiento FOREIGN KEY (cursoID) REFERENCES cursos(id) ON DELETE CASCADE ON UPDATE CASCADE" +
                     ");";
         try {
             connection = DriverManager.getConnection(dbURL, username, password);

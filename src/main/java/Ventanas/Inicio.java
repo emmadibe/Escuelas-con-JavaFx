@@ -16,8 +16,6 @@ public class Inicio extends Application
     public static void main(String[] args)
     {
         Conexion.getConnection(); //Me conecto a la base de datos. Si no existe, la creo.we
-//        SeguimientoModelo seguimientoModelo = new SeguimientoModelo();
-//        seguimientoModelo.crearTablaBDD();
         launch(args);
     }
     @Override
