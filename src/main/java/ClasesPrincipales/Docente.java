@@ -19,6 +19,14 @@ public class Docente extends Persona implements ClasesGenerales<Docente>
         this.setEdad(edad);
         this.setPassword(password);
     }
+    public Docente(int id, String nombre, String apellido, int edad, String password)
+    {
+        this.setID(id);
+        this.setNombre(nombre);
+        this.setApellido(apellido);
+        this.setEdad(edad);
+        this.setPassword(password);
+    }
     public Docente(String nombre, String apellido, String dni, String email, int edad, Rama rama, String password)
     {
         this.setRama(rama);

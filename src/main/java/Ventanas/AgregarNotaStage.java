@@ -4,6 +4,7 @@ import Scenes.ActualizarNotaScene;
 import Scenes.AgregarExamenScene;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class AgregarNotaStage extends Application //Todas las clases principales (las nuevas ventanas) deben extender de application
@@ -29,6 +30,7 @@ public class AgregarNotaStage extends Application //Todas las clases principales
         stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("Actualizar notas");
+        stage.getIcons().add(new Image("A:\\Dev\\UTN\\carrera\\Programación 2 Java\\JavaFx\\probarJavaFx\\TpFinalCOnJavaFx\\xardas.jpeg")); //Le seteo el ícono a la ventana
         stage.show();
     }
 

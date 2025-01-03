@@ -1,8 +1,7 @@
 package Ventanas;
 
-import ClasesPrincipales.ArrayListGenerico;
-import ClasesPrincipales.TraerTodo;
-import Controladores.TraerTodoControlador;
+import ClasesPrincipales.*;
+import Controladores.*;
 import Excepciones.ArrayListVacioException;
 import Scenes.LoginScene;
 import com.ecodeup.jdbc.Conexion;
@@ -21,6 +20,8 @@ public class Inicio extends Application
     @Override
     public void start(Stage stage) throws Exception
     {
+        //Reproduzco la música
+        Musica.playMusic();
         ///////////////////////////CREAR UNA ESCENA
         //Instancio la clase-escena LoginScene; pues, es la escena inicial que debe tener mi ventana:
         LoginScene loginScene = new LoginScene();
@@ -34,5 +35,6 @@ public class Inicio extends Application
         stage.setTitle("LoginScene"); //Seteo un título a mi ventana(stage).
         /////////////////////////////Muestro:
         stage.show();
+
     }
 }

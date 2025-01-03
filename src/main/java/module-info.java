@@ -10,12 +10,13 @@ module org.example.tpfinalconjavafx {
     requires org.kordamp.bootstrapfx.core;
     //requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
-    requires java.sql;
     requires java.persistence;
     requires net.bytebuddy;
-    requires java.desktop;
     requires org.hibernate.orm.core;
     requires jdk.jfr;
+    requires javafx.media;
+    requires com.fasterxml.jackson.databind;
+    requires java.sql;
 
     opens org.example.tpfinalconjavafx to javafx.fxml;
     exports org.example.tpfinalconjavafx;

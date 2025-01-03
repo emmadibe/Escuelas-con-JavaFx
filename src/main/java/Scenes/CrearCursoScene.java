@@ -2,6 +2,7 @@ package Scenes;
 
 import ClasesPrincipales.Curso;
 import ClasesPrincipales.Docente;
+import ClasesPrincipales.FuncionesGenerales;
 import Controladores.CursoControlador;
 import ENUMS.Rama;
 import Interfaces.Escenas;
@@ -96,15 +97,22 @@ public class CrearCursoScene extends VBox implements Escenas
             String materia = this.getDisplayMateria().getText();
             int docenteID = this.getDocente().getID();
             CursoControlador cursoControlador = new CursoControlador();
-            int id = cursoControlador.traerIdUltimoRegistro();
+            int cicloLectivo = FuncionesGenerales.obtenerAnioActual();
             //Instancio un curso y lo agrego a la BDD
-            Curso curso = new Curso(id, nombre, cantAlumnos, escuela, materia, docenteID);
+            int id = cursoControlador.traerIdUltimoRegistro() + 1;
+            Curso curso = new Curso(id, nombre, cantAlumnos, escuela, materia, docenteID, cicloLectivo);
             cursoControlador.agregarUnRegistro(curso);
             //Cambiar de escena:
             Stage stage = (Stage) scene.getWindow();
             VerCursoScene verCursoScene = new VerCursoScene(curso);
             Scene scene1 = verCursoScene.crear();
             stage.setScene(scene1);
+        });
+        //Botón cancelar:
+        this.getButtonCancelar().setOnAction(e -> {
+            Stage stage = (Stage) scene.getWindow();
+            DocenteScene docenteScene = new DocenteScene(this.getDocente());
+            stage.setScene(docenteScene.crear());
         });
 
 

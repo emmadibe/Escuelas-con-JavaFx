@@ -35,8 +35,16 @@ public class CursoControlador implements Controladores<Curso>
     }
 
     @Override
-    public void eliminarRegistro(Curso curso) {
+    public void eliminarRegistro(Curso curso)
+    {
+        cursoModelo.borrarRegistroBDD(curso);
+    }
 
+    public ArrayListGenerico<Curso> traerTodosPorCicloLectivo(int cicloLectivo)
+    {
+        ArrayListGenerico<Curso> arrayListGenerico = new ArrayListGenerico<Curso>();
+        arrayListGenerico = cursoModelo.traerTodosPorCiclolectivoBDD(cicloLectivo, this.getDocenteID());
+        return arrayListGenerico;
     }
 
     @Override
@@ -53,8 +61,9 @@ public class CursoControlador implements Controladores<Curso>
     }
 
     @Override
-    public void editarRegistro(Curso curso) {
-
+    public void editarRegistro(Curso curso)
+    {
+        cursoModelo.editarRegistroBDD(curso);
     }
 
     @Override
@@ -71,6 +80,12 @@ public class CursoControlador implements Controladores<Curso>
     @Override
     public Curso traerUnRegistro(Curso curso) {
         return null;
+    }
+
+    public ArrayListGenerico<Integer> traerTodosLosCiclosLectivosDelDocente(int docenteID)
+    {
+        ArrayListGenerico<Integer> arrayListDeInteger = new ArrayListGenerico<>();
+        return cursoModelo.traerTodosLosCiclosLectivosDelDocenteBDD(docenteID);
     }
 
     @Override

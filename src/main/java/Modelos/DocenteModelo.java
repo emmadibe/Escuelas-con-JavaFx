@@ -165,8 +165,34 @@ public class DocenteModelo extends General implements Modelos<Docente>
     }
 
     @Override
-    public void editarRegistroBDD(Docente docente) {
-
+    public void editarRegistroBDD(Docente docente)
+    {
+        Connection connection = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        String sql = "UPDATE docentes " +
+                    "SET nombre = ?, apellido = ?, password = ? " +
+                    "WHERE id = ?;";
+        try {
+            connection = DriverManager.getConnection(dbURL, username, password);
+            statement = connection.createStatement();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, docente.getNombre());
+            preparedStatement.setString(2, docente.getApellido());
+            preparedStatement.setString(3, docente.getPassword());
+            preparedStatement.setInt(4, docente.getID());
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if(connection != null) connection.close();
+                if(statement != null) statement.close();
+                if(preparedStatement != null) preparedStatement.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -174,6 +200,8 @@ public class DocenteModelo extends General implements Modelos<Docente>
     {
 
     }
+
+
 
     @Override
     public boolean existeRegistroBDD(Docente docente)

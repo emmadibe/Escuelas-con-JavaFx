@@ -68,4 +68,54 @@ public class TraerTodoModelo extends General
         }
         return arrayTraetTodo;
     }
+
+    public static boolean existenRegistrosParaCursoID(int cursoID)
+    {
+        Connection connection = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        boolean posible = false;
+        String sql = "SELECT \n" +
+                "    CONCAT(e.nombre, ' ', e.apellido) AS nombreYapellido, \n" +
+                "    CONCAT(ex.numeroExamen, ' ', ex.nombre) AS numeroYnombreExamen, \n" +
+                "    te.nota, \n" +
+                "    ex.numeroExamen \n" +
+                "FROM \n" +
+                "    estudiantes e \n" +
+                "INNER JOIN \n" +
+                "    tablaintermediaestudiantesxcursos tic ON e.id = tic.estudianteID \n" +
+                "INNER JOIN \n" +
+                "    tablaintermediaestudiantexexamen te ON e.id = te.estudianteID \n" +
+                "INNER JOIN \n" +
+                "    examenes ex ON te.examenID = ex.id \n" +
+                "WHERE \n" +
+                "    tic.cursoID = ? \n" +
+                "AND \n" +
+                "    te.nota = (SELECT MAX(nota) FROM tablaintermediaestudiantexexamen WHERE estudianteID = e.id AND examenID = te.examenID)\n" +
+                "ORDER BY \n" +
+                "    e.nombre, ex.numeroExamen;";
+        try {
+            connection = DriverManager.getConnection(dbURL, username, password);
+            statement = connection.createStatement();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, cursoID);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                posible = true;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if(connection != null) connection.close();
+                if(statement != null) statement.close();
+                if(preparedStatement != null) preparedStatement.close();
+                if(resultSet != null) resultSet.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return posible;
+    }
 }

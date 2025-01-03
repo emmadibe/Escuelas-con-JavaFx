@@ -1,8 +1,10 @@
 package NodosControladores;
 
+import ClasesPrincipales.ArrayListGenerico;
 import ClasesPrincipales.Curso;
 import ClasesPrincipales.Estudiante;
 import ClasesPrincipales.Examen;
+import Controladores.CursoControlador;
 import Scenes.VerCursoScene;
 import Scenes.VerExamenScene;
 import Ventanas.AgregarNotaStage;
@@ -10,14 +12,15 @@ import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
+import javafx.scene.control.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Objects;
 
 public class MetodosGeneralesFx
@@ -47,7 +50,8 @@ public class MetodosGeneralesFx
         return crearTextField(""); // Llama a la otra versión con un valor por defecto
     }
 
-    public static TextField crearTextField(String etiquetaDisplay) { //Sobrecargo el método
+    public static TextField crearTextField(String etiquetaDisplay) //Sobrecargo el método
+    {
         return new TextField(etiquetaDisplay);
     }
     public static VBox transformarNombresDeLosBotones(VBox vBox)
@@ -113,6 +117,7 @@ public class MetodosGeneralesFx
 
     public static void animacionEtiqueta(Label label, String texto)
     {
+        label.setStyle("-fx-background-color: yellow; -fx-padding: 10px;");
         label.setText(texto); //Seteo el texto en la etiqueta.
         label.setVisible(true); // Aseguro que el label sea visible-
         // Creo la animaciónn
@@ -122,5 +127,44 @@ public class MetodosGeneralesFx
         animacion.setCycleCount(2);
         animacion.setAutoReverse(true);
         animacion.play();
+    }
+
+    public static ContextMenu asignarMenues(int docenteID)
+    {
+        ContextMenu contextMenu = new ContextMenu();
+        CursoControlador cursoControlador = new CursoControlador();
+        ArrayListGenerico<Integer> arrayListGenericoCiclosLectivos = cursoControlador.traerTodosLosCiclosLectivosDelDocente(docenteID); //Tengo en el arayList todos los ciclos lectivos del docente.
+        //Cada valor del arrayList, cacada anio, dbee ser un item del ContexMenu. Voy a iterar el arrayList. En cada bucle, tendré un cicloLectivo, el cual asignaré como item al contexMenu:
+        for(int i = 0; i < arrayListGenericoCiclosLectivos.tamanio(); i++){
+            Integer cicloLectivo = arrayListGenericoCiclosLectivos.retornarUnElementoPorPosicion(i); //Obtengo el ciclo lectivo actual
+            MenuItem menuItem = new MenuItem(cicloLectivo.toString()); //Creo un item nuevo cuyo nombre será el ciclo lectivo
+            contextMenu.getItems().add(menuItem); //Agrego el item al contextMenu.
+        }
+        return contextMenu;
+    }
+
+    public static Alert createAlerta(String titulo, String cabecera, String cuerpo)
+    {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(cabecera);
+        alert.setContentText(cuerpo);
+        // Obtener el diálogo de la alerta y setear el estilo
+        Region content = (Region) alert.getDialogPane().getChildren().get(0);
+        content.setStyle("-fx-background-color: red;");
+        return alert;
+    }
+    public static ButtonType createButtonType(String etiqueta)
+    {
+        return new ButtonType(etiqueta);
+    }
+
+    public static TextArea createTextArea(String etiqueta)
+    {
+        TextArea notaArea = new TextArea(etiqueta);
+        notaArea.setPromptText("Escribe tu nota aquí...");
+        notaArea.setWrapText(true);  // Permite que el texto se envuelva automáticamente
+        notaArea.setPrefHeight(200); // Ajusta la altura preferida
+        return notaArea;
     }
 }

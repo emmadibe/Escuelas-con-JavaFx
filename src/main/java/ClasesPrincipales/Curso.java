@@ -11,9 +11,11 @@ public class Curso implements ClasesGenerales<Curso>
     private String escuela;
     private String materia;
     private int docenteID;
+    private int cicloLectivo;
 
     public Curso(){}
-    public Curso(int id, String nombre, int cantAlumnos, String escuela, String materia, int docenteID)
+
+    public Curso(int id, String nombre, int cantAlumnos, String escuela, String materia, int docenteID, int cicloLectivo)
     {
         this.setID(id);
         this.setCantAlumnos(cantAlumnos);
@@ -21,6 +23,7 @@ public class Curso implements ClasesGenerales<Curso>
         this.setMateria(materia);
         this.setNombre(nombre);
         this.setDocenteID(docenteID);
+        this.setCicloLectivo(cicloLectivo);
     }
     @Override
     public void imprimirUnaInstancia()
@@ -86,5 +89,13 @@ public class Curso implements ClasesGenerales<Curso>
 
     public void setDocenteID(int docenteID) {
         this.docenteID = docenteID;
+    }
+
+    public int getCicloLectivo() {
+        return cicloLectivo;
+    }
+
+    public void setCicloLectivo(int cicloLectivo) {
+        this.cicloLectivo = cicloLectivo;
     }
 }

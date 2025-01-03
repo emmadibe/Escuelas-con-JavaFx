@@ -34,8 +34,9 @@ public class DocenteControlador implements Controladores<Docente>
     }
 
     @Override
-    public void editarRegistro(Docente docente) {
-
+    public void editarRegistro(Docente docente)
+    {
+        docenteModelo.editarRegistroBDD(docente);
     }
 
     @Override

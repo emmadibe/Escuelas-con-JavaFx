@@ -4,6 +4,7 @@ import ClasesPrincipales.ArrayListGenerico;
 import ClasesPrincipales.TraerTodo;
 import ClasesPrincipales.TraerTodoLaParteExamenes;
 import ClasesPrincipales.TraerTodoPasandoNotasADiccionario;
+import Modelos.General;
 import Modelos.TraerTodoModelo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -99,6 +100,23 @@ public class TraerTodoControlador {
         this.getTodoTableView().setItems(this.getObservableList());
 
         return todoTableView;
+    }
+
+
+    public static boolean esPosibleCrearTabla(int cursoID) //Quiero averiguar si el curso ya tiene alumnos y exámenes para poder armar la tabla.
+    {
+        boolean posible = false;
+
+        boolean existeEstudiantes = General.existeTabla("estudiantes");
+        boolean existeExamenes = General.existeTabla("examenes");
+        boolean existeTIEXE = General.existeTabla("tablaintermediaestudiantexexamen");
+        boolean existeTIEXC = General.existeTabla("tablaintermediaestudiantesxcursos");
+        //Primero, debo corroborar que existan las tablas:
+        if(existeTIEXC && existeTIEXE && existeEstudiantes && existeExamenes){
+            //Luego de corroborar que existan las tablas, compruebo que haya regitros para este cursoID.
+            posible = TraerTodoModelo.existenRegistrosParaCursoID(cursoID);
+        }
+        return posible;
     }
 
     // Getters y Setters

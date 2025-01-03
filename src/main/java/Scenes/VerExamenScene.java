@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.Button;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class VerExamenScene extends VBox implements Escenas
 {
@@ -55,7 +56,7 @@ public class VerExamenScene extends VBox implements Escenas
         this.gethBoxBotones().setAlignment(Pos.CENTER);
 
         /////ESCENAS
-        Scene scene = null;
+        Scene scene;
         if(!arrayListEstudiante.estaVacio()){
             this.setEstudiantesVbox(arrayListEstudiante.transformarTEnBotones(this.getStage()));//En esta caja vbox tengo botones. Cada botón es un estudiante. La lógica está en arrayListgenerico.
             //Agrego los nodos a mi layouts:
@@ -64,6 +65,8 @@ public class VerExamenScene extends VBox implements Escenas
             scene = new Scene(this.getvBox(), 800, 600);
             //Le seteo la ruta de mi archivo css para aplicarle estilos a mi escena:
             scene.getStylesheets().add(getClass().getResource("/Estilos/styles.css").toExternalForm());
+        } else {
+            scene = null;
         }
 
         //////////////////////////////////////////MANEJADORES DE EVENTOS
@@ -73,8 +76,10 @@ public class VerExamenScene extends VBox implements Escenas
             Curso curso = cursoControlador.traerRegistroAPartirDeID(this.getExamen().getCursoID());
             VerTodosLosExamenesScene verTodosLosExamenesScene = new VerTodosLosExamenesScene(this.getStage(), curso);
             Scene scene1 = verTodosLosExamenesScene.crear();
-            Stage stage1 = this.getStage();
-            stage1.setScene(scene1);
+            if(!Objects.isNull(scene)){ //Si no es nullo, significa que cargó la escena. Puedo obtener (get) la ventana en la que estoy posicionado.
+                Stage stage1 = (Stage) scene.getWindow();
+                stage1.setScene(scene1);
+            }
         });
         
         return scene;

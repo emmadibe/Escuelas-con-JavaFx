@@ -67,27 +67,15 @@ public class DocenteScene extends VBox implements Escenas
         crearCurso.setOnAction(e -> {
             this.getDocente().imprimirUnaInstancia();
         });
-
+        //Cerrar sesión.
         cerrarSesion.setOnAction(e -> {
             LoginScene loginScene = new LoginScene();
             Stage stage = (Stage) scene.getWindow(); //VENTANA actual.
             stage.setScene(loginScene.crear());
             //La animación:
-            loginScene.getLabelLogOut().setText("¡Nos vemos luego, " + this.getDocente().getNombre() + "!");
             loginScene.getGridPane().add(loginScene.getLabelLogOut(), 3, 5); //Recién agrego mi nodo-label a mi layout cuando hay un elogOut. Para que aparezca recién ahí.
-            loginScene.getLabelLogOut().setVisible(true); // Ensure the label is visible
-
-            // Create the animation
-            TranslateTransition animacion = new TranslateTransition(Duration.millis(500), loginScene.getLabelLogOut());
-            animacion.setFromY(0);
-            animacion.setToY(-50);
-            animacion.setCycleCount(2);
-            animacion.setDuration(Duration.millis(1000));
-            animacion.setAutoReverse(true);
-            animacion.setOnFinished(e2 -> {
-                loginScene.getLabelLogOut().setVisible(false); // Oculta el label al finalizar la animación
-            });
-            animacion.play();
+            String texto = "Nos vemos luego, " + this.getDocente().getNombre();
+            MetodosGeneralesFx.animacionEtiqueta(loginScene.getLabelLogOut(), texto);
         });
 
         crearCurso.setOnAction((e -> {
@@ -103,6 +91,13 @@ public class DocenteScene extends VBox implements Escenas
             stage.setScene(scene1);
         });
 
+        //Editar perfil:
+        editarPerfil.setOnAction(e ->{
+            EditarUsuarioScene editarUsuarioScene = new EditarUsuarioScene(this.getDocente());
+            Scene scene1 = editarUsuarioScene.crear();
+            Stage stage = (Stage) scene.getWindow();
+            stage.setScene(scene1);
+        });
         return scene;
     }
 
