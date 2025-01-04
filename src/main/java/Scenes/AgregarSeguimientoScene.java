@@ -14,6 +14,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
+import java.time.LocalDate;
+
 public class AgregarSeguimientoScene extends VBox implements Escenas
 {
 
@@ -80,7 +82,8 @@ public class AgregarSeguimientoScene extends VBox implements Escenas
         this.getButtonAgregarSeguimiento().setOnAction(e -> {
             String titulo = this.getDisplayTitulo().getText();
             String cuerpo = this.getDisplayCuerpo().getText();
-            Seguimiento seguimiento = new Seguimiento(titulo, cuerpo, this.getCurso().getID());
+            LocalDate fecha = LocalDate.now(); //Obtengo fecha actual en formato yyyy/mm/dd
+            Seguimiento seguimiento = new Seguimiento(titulo, cuerpo, fecha, this.getCurso().getID());
             SeguimientoControlador seguimientoControlador = new SeguimientoControlador();
             seguimientoControlador.agregarUnRegistro(seguimiento);
         });

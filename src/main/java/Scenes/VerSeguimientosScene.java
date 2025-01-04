@@ -1,9 +1,14 @@
 package Scenes;
 
+import ClasesPrincipales.ArrayListGenerico;
 import ClasesPrincipales.Curso;
+import ClasesPrincipales.Seguimiento;
+import Controladores.SeguimientoControlador;
+import Controladores.TraerTodosLosSeguimientosControlador;
 import Interfaces.Escenas;
 import NodosControladores.MetodosGeneralesFx;
 import javafx.scene.Scene;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
@@ -20,6 +25,7 @@ public class VerSeguimientosScene extends VBox implements Escenas
     private HBox hBox;
     private Button buttonAgregarSeguimiento;
     private Button buttonVolver;
+    private TableView<Seguimiento> tableViewSeguimiento;
 
     public VerSeguimientosScene(Curso curso)
     {
@@ -43,6 +49,7 @@ public class VerSeguimientosScene extends VBox implements Escenas
                         "Materia: " + this.getCurso().getMateria() + "\n" +
                         "Ciclo Lectivo: " + this.getCurso().getCicloLectivo() + "\n" +
                         "Cantidad de alumnos: " +this.getCurso().getCantAlumnos());//Le agrego todo este texto a la etiqueta.
+
         //Buttons
         this.setButtonAgregarSeguimiento(MetodosGeneralesFx.createButton("Agregar un seguimiento", 150));
         this.setButtonVolver(MetodosGeneralesFx.createButton("Volver", 150));
@@ -50,8 +57,14 @@ public class VerSeguimientosScene extends VBox implements Escenas
         //Agrego los botones a la caja hbox
         this.gethBox().getChildren().addAll(this.getButtonAgregarSeguimiento(), this.getButtonVolver());
 
-        //Agrgeo los nodos a mi layouts:
-        this.getVbox().getChildren().addAll(this.getLabelCurso(), this.gethBox());
+        //Traerme todos los seguimientos y agregar los nodos a mi layouts.
+        TraerTodosLosSeguimientosControlador TTSC = new TraerTodosLosSeguimientosControlador(this.getCurso());
+        if(TTSC.esPosibleCrearTabla()){ //Corrobora que sea posible crear la tabla. Para ello, debe existir la tabla Seguimientos en la base de datos y debe haber, por lo menos, un registro en ella para mi cursoID.
+            this.setTableViewSeguimiento(TTSC.agregarDatosALaTabla()); //Ya tengo la tabla con todos los registros. Luego se la debo setear a mi nodo Vbox.
+            this.getVbox().getChildren().addAll(this.getLabelCurso(), this.getTableViewSeguimiento(), this.gethBox()); //Agrgeo todos los nodos a mi layouts.
+        }else{
+            this.getVbox().getChildren().addAll(this.getLabelCurso(), this.gethBox()); //Si no es posible crear la tabla, agrego el resto de los nodos a mi layouts.
+        }
 
         /////////////////////////////////////////////ESCENA
         Scene scene = new Scene(this.getVbox(), 800, 600);
@@ -119,5 +132,13 @@ public class VerSeguimientosScene extends VBox implements Escenas
 
     public void sethBox(HBox hBox) {
         this.hBox = hBox;
+    }
+
+    public TableView<Seguimiento> getTableViewSeguimiento() {
+        return tableViewSeguimiento;
+    }
+
+    public void setTableViewSeguimiento(TableView<Seguimiento> tableViewSeguimiento) {
+        this.tableViewSeguimiento = tableViewSeguimiento;
     }
 }

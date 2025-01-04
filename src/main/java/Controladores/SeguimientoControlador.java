@@ -8,6 +8,15 @@ import Modelos.SeguimientoModelo;
 
 public class SeguimientoControlador implements Controladores<Seguimiento>
 {
+    private int cursoID;
+
+    public SeguimientoControlador(int cursoID)
+    {
+        this.setCursoID(cursoID);
+    }
+
+    public SeguimientoControlador(){}
+
     public SeguimientoModelo seguimientoModelo = new SeguimientoModelo();
     @Override
     public boolean existeTabla() {
@@ -35,9 +44,15 @@ public class SeguimientoControlador implements Controladores<Seguimiento>
 
     }
 
+    public boolean existeRegistroParaCursoID()
+    {
+        return seguimientoModelo.existeRegistroParaCursoIDBDD(this.getCursoID());
+    }
+
     @Override
-    public ArrayListGenerico traerTodos() {
-        return null;
+    public ArrayListGenerico<Seguimiento> traerTodos()
+    {
+        return seguimientoModelo.traerTodosBDD(this.getCursoID());
     }
 
     @Override
@@ -62,5 +77,13 @@ public class SeguimientoControlador implements Controladores<Seguimiento>
     @Override
     public Seguimiento traerRegistroAPartirDeID(int id) {
         return null;
+    }
+
+    public int getCursoID() {
+        return cursoID;
+    }
+
+    public void setCursoID(int cursoID) {
+        this.cursoID = cursoID;
     }
 }
