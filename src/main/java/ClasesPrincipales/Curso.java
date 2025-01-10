@@ -1,5 +1,6 @@
 package ClasesPrincipales;
 
+import ENUMS.DIA;
 import ENUMS.Rama;
 import Interfaces.ClasesGenerales;
 
@@ -12,6 +13,7 @@ public class Curso implements ClasesGenerales<Curso>
     private String materia;
     private int docenteID;
     private int cicloLectivo;
+    private ArrayListGenerico<DIA> diasDeClase;
 
     public Curso(){}
 
@@ -97,5 +99,13 @@ public class Curso implements ClasesGenerales<Curso>
 
     public void setCicloLectivo(int cicloLectivo) {
         this.cicloLectivo = cicloLectivo;
+    }
+
+    public ArrayListGenerico<DIA> getDiasDeClase() {
+        return diasDeClase;
+    }
+
+    public void setDiasDeClase(ArrayListGenerico<DIA> diasDeClase) {
+        this.diasDeClase = diasDeClase;
     }
 }

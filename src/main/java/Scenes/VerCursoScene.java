@@ -31,6 +31,7 @@ public class VerCursoScene extends VBox implements Escenas
     private Button buttonVolver;
     private Button buttonVerExamenes;
     private Button buttonVerSeguimientos;
+    private Button buttonAsistencia;
     private Alert alertEliminarCurso;
     private ButtonType buttonTypeAlertaEliminar;
     private ButtonType buttontypeAlertaCancelar;
@@ -74,9 +75,10 @@ public class VerCursoScene extends VBox implements Escenas
         this.setButtonEliminarCurso(MetodosGeneralesFx.createButton("Eliminar curso", 150));
         this.setButtonVerExamenes(MetodosGeneralesFx.createButton("Ver exámenes", 150));
         this.setButtonVerSeguimientos(MetodosGeneralesFx.createButton("Ver seguimientos", 150));
+        this.setButtonAsistencia(MetodosGeneralesFx.createButton("Asistencia", 150));
         //Creo un layouts HBox para mis botones y poder centrarlos.
         HBox buttonBox = new HBox(10); //10px es la distancia entre los elementos de mis box.
-        buttonBox.getChildren().addAll(this.getButtonAgregarAlumnos(), this.getButtonAgregarExamen(), this.getButtonEditarCurso(), this.getButtonEliminarCurso(), this.getButtonVerExamenes(), this.getButtonVerSeguimientos(), this.getButtonVolver());
+        buttonBox.getChildren().addAll(this.getButtonAgregarAlumnos(), this.getButtonAgregarExamen(), this.getButtonEditarCurso(), this.getButtonEliminarCurso(), this.getButtonVerExamenes(), this.getButtonVerSeguimientos(), this.getButtonAsistencia(), this.getButtonVolver());
         //////Alert
         String titulo = "Peligro";
         String cabecera = "¿Seguro que desea eliminar el curso " + this.getCurso().getNombre()+"?";
@@ -168,6 +170,12 @@ public class VerCursoScene extends VBox implements Escenas
             Stage stage = (Stage) scene.getWindow();
             VerSeguimientosScene verSeguimientosScene = new VerSeguimientosScene(this.getCurso());
             stage.setScene(verSeguimientosScene.crear());
+        });
+        //Button asistencias:
+        this.getButtonAsistencia().setOnAction(e -> {
+            Stage stage = (Stage) scene.getWindow();
+            VerAsistenciasScene verAsistenciasScene = new VerAsistenciasScene(this.getCurso());
+            stage.setScene(verAsistenciasScene.crear());
         });
         return scene;
     }
@@ -306,5 +314,21 @@ public class VerCursoScene extends VBox implements Escenas
 
     public void setButtonVerSeguimientos(Button buttonVerSeguimientos) {
         this.buttonVerSeguimientos = buttonVerSeguimientos;
+    }
+
+    public Button getButtonAsistencia() {
+        return buttonAsistencia;
+    }
+
+    public void setButtonAsistencia(Button buttonAsistencia) {
+        this.buttonAsistencia = buttonAsistencia;
+    }
+
+    public TableView<TraerTodoPasandoNotasADiccionario> getTableView() {
+        return tableView;
+    }
+
+    public void setTableView(TableView<TraerTodoPasandoNotasADiccionario> tableView) {
+        this.tableView = tableView;
     }
 }

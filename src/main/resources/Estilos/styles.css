@@ -6,3 +6,8 @@
 .gridpane-background {
     -fx-background-color: lightblue;
 }
+
+.list-cell:filled:selected {
+    -fx-background-color: lightblue; /* Color de fondo para seleccionados */
+    -fx-text-fill: white; /* Color del texto para seleccionados */
+}

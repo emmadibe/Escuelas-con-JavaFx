@@ -3,6 +3,7 @@ package Ventanas;
 import ClasesPrincipales.*;
 import Controladores.*;
 import Excepciones.ArrayListVacioException;
+import Modelos.ClaseModelo;
 import Modelos.SeguimientoModelo;
 import Scenes.LoginScene;
 import com.ecodeup.jdbc.Conexion;

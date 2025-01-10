@@ -1,5 +1,6 @@
 package ClasesPrincipales;
 import java.time.Year;
+import java.util.Arrays;
 
 public class FuncionesGenerales
 {
@@ -7,4 +8,5 @@ public class FuncionesGenerales
     {
         return Year.now().getValue();
     }
+
 }

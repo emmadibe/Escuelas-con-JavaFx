@@ -5,10 +5,14 @@ import ClasesPrincipales.Curso;
 import ClasesPrincipales.Estudiante;
 import ClasesPrincipales.Examen;
 import Controladores.CursoControlador;
+import ENUMS.DIA;
+import Scenes.CrearCursoScene;
 import Scenes.VerCursoScene;
 import Scenes.VerExamenScene;
 import Ventanas.AgregarNotaStage;
 import javafx.animation.TranslateTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,9 +25,10 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.util.List;
 import java.util.Objects;
 
-public class MetodosGeneralesFx
+public class MetodosGeneralesFx<T>
 {
     public static Label labelMensajeDeError = MetodosGeneralesFx.crearLabel("errorMensaje", "red", "10", "10");
 
@@ -166,5 +171,26 @@ public class MetodosGeneralesFx
         notaArea.setWrapText(true);  // Permite que el texto se envuelva automáticamente
         notaArea.setPrefHeight(200); // Ajusta la altura preferida
         return notaArea;
+    }
+
+    public ListView<T> crearListaDeOpcionesMultiples(List<T> listOpciones)
+    {
+        ObservableList<T> options = FXCollections.observableArrayList(); //Instancio el ObservableList (ArrayList de JavaFx) ya que es la colección aceptada por el nodo ListView para setearle las opciones.
+        for(int i = 0; i < listOpciones.size(); i++){
+            T t =   listOpciones.get(i);
+            options.add(t); //Voy pasando los eleemntos que tengo en el Arraylist al ObservableList.
+        }
+        // Crear un ListView para mostrar las opciones
+        ListView<T> listView = new ListView<>(options);
+        // Configurar el modelo de selección para permitir múltiples selecciones
+        listView.getSelectionModel().setSelectionMode(javafx.scene.control.SelectionMode.MULTIPLE);
+        // Aplicar estilo a los elementos seleccionados
+        listView.getStylesheets().add(CrearCursoScene.class.getResource("/Estilos/styles.css").toExternalForm());
+        // Desactivar la selección por foco para mantener todas las selecciones visibles
+        listView.setFocusTraversable(false);
+        listView.getSelectionModel().selectedItemProperty().addListener((changed, oldValue, newValue) -> {
+            // No necesitas hacer nada aquí si solo quieres que se mantengan los colores seleccionados
+        });
+        return listView;
     }
 }

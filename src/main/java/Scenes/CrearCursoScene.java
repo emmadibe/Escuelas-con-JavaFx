@@ -1,9 +1,11 @@
 package Scenes;
 
+import ClasesPrincipales.ArrayListGenerico;
 import ClasesPrincipales.Curso;
 import ClasesPrincipales.Docente;
 import ClasesPrincipales.FuncionesGenerales;
 import Controladores.CursoControlador;
+import ENUMS.DIA;
 import ENUMS.Rama;
 import Interfaces.Escenas;
 import NodosControladores.MetodosGeneralesFx;
@@ -11,12 +13,16 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Currency;
+import java.util.List;
 
 public class CrearCursoScene extends VBox implements Escenas
 {
@@ -33,6 +39,9 @@ public class CrearCursoScene extends VBox implements Escenas
     private Button buttonCancelar;
     private VBox vBox;
     private Docente docente; //Así tengo los datos del docente.
+    private Label labelDiasClase;
+    private ListView<DIA> listViewDia;
+    private List<DIA> listDia;
 
     public CrearCursoScene(Docente docente)
     {
@@ -59,6 +68,12 @@ public class CrearCursoScene extends VBox implements Escenas
         this.setLabelCantAlumnos(MetodosGeneralesFx.crearLabel("Cantidad de alumnos", "null", "0", "0"));
         this.setDisplayCantAlumnos(MetodosGeneralesFx.crearTextField());
 
+        //ListView
+        this.setLabelDiasClase(MetodosGeneralesFx.crearLabel("Dias que das la clase"));
+        MetodosGeneralesFx<DIA> metodosGeneralesFx = new MetodosGeneralesFx<>();
+        this.setListDia(new ArrayList<>(Arrays.asList(DIA.values()))); //Tengo una lista en donde cada uno de sus elementos es un ENUm/Dia.
+        this.setListViewDia(metodosGeneralesFx.crearListaDeOpcionesMultiples(this.getListDia())); //Listo: ya tengo un nodo en donde se desplegan una serie de elementos-opciones. Cada una de ellas es un ENUM/DIA. El usuario puede seleccionar más de una opción.
+
         //Botones
         //Creo un HBox para los botones y para poder centrarlos. Son solo dos.
         HBox buttonBox = new HBox(10);
@@ -80,6 +95,8 @@ public class CrearCursoScene extends VBox implements Escenas
                 this.getDisplayMateria(),
                 this.getLabelCantAlumnos(),
                 this.getDisplayCantAlumnos(),
+                this.getLabelDiasClase(),
+                this.getListViewDia(),
                 buttonBox);
 
         /////////////////////////////ESCENA
@@ -107,6 +124,8 @@ public class CrearCursoScene extends VBox implements Escenas
             VerCursoScene verCursoScene = new VerCursoScene(curso);
             Scene scene1 = verCursoScene.crear();
             stage.setScene(scene1);
+            List<DIA> selectedItems = this.getListViewDia().getSelectionModel().getSelectedItems();
+            System.out.println("Opciones seleccionadas: " + selectedItems);
         });
         //Botón cancelar:
         this.getButtonCancelar().setOnAction(e -> {
@@ -221,5 +240,29 @@ public class CrearCursoScene extends VBox implements Escenas
 
     public void setDocente(Docente docente) {
         this.docente = docente;
+    }
+
+    public ListView<DIA> getListViewDia() {
+        return listViewDia;
+    }
+
+    public void setListViewDia(ListView<DIA> listViewDia) {
+        this.listViewDia = listViewDia;
+    }
+
+    public List<DIA> getListDia() {
+        return listDia;
+    }
+
+    public void setListDia(List<DIA> listDia) {
+        this.listDia = listDia;
+    }
+
+    public Label getLabelDiasClase() {
+        return labelDiasClase;
+    }
+
+    public void setLabelDiasClase(Label labelDiasClase) {
+        this.labelDiasClase = labelDiasClase;
     }
 }
