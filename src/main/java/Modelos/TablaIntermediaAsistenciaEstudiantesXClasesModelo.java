@@ -93,4 +93,38 @@ public class TablaIntermediaAsistenciaEstudiantesXClasesModelo extends General
         }
         return lastID;
     }
+
+    public static boolean existenRegistrosParaCursoID(int cursoID)
+    {
+        boolean existe = false;
+        Connection connection = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String sql = "SELECT ti.id FROM tablaintermediaasistenciaestudiantesxclases ti " +
+                "INNER JOIN clases c ON c.id = ti.claseID " +
+                "WHERE c.cursoID = ?;";
+        try {
+            connection = DriverManager.getConnection(dbURL, username, password);
+            statement = connection.createStatement();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, cursoID);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){ //Corroboro que exista, al menos, un registro traído desde la BDD
+                existe = true;
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if(connection != null) connection.close();
+                if(statement != null) statement.close();
+                if(preparedStatement != null) preparedStatement.close();
+                if(resultSet != null) resultSet.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return existe;
+    }
 }

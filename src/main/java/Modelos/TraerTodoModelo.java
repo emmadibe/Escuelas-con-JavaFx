@@ -61,11 +61,6 @@ public class TraerTodoModelo extends General
                 e.printStackTrace();
             }
         }
-        try {
-            arrayTraetTodo.imprimirTodo();
-        } catch (ArrayListVacioException e) {
-            throw new RuntimeException(e);
-        }
         return arrayTraetTodo;
     }
 

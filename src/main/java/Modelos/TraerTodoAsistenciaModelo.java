@@ -17,16 +17,14 @@ public class TraerTodoAsistenciaModelo extends General
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         ArrayListGenerico<TraerTodoAsistencia> arrayListTraerTodoAsistencia = new ArrayListGenerico<>();
-        String sql = "SELECT " +
-                    "CONCAT(e.nombre, ' ', e.apellido AS nombreYapellido," +
-                    "c.fecha," +
-                    "ti.asistio" +
-                    "FROM estudiantes e " +
-                    "INNER JOIN" +
-                    "clases c ON c.estudianteID = e.id" +
-                    "INNER JOIN " +
-                    "tablaIntermediaAsistenciaEstudiantesXClases ti ON ti.estudianteID = e.id" +
-                    "WHERE ti.cursoID = ?";
+        String sql = "SELECT \n" +
+                "    CONCAT(e.nombre, ' ', e.apellido) AS nombreYapellido,\n" +
+                "    c.fecha,\n" +
+                "    ti.asistio\n" +
+                "FROM estudiantes e \n" +
+                "INNER JOIN tablaIntermediaAsistenciaEstudiantesXClases ti ON ti.estudianteID = e.id\n" +
+                "INNER JOIN clases c ON c.id = ti.claseID\n" +
+                "WHERE c.cursoID = ?;";
         try {
             connection = DriverManager.getConnection(dbURL, username, password);
             statement = connection.createStatement();

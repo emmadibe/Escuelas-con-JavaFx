@@ -5,6 +5,7 @@ import Controladores.*;
 import Excepciones.ArrayListVacioException;
 import Modelos.ClaseModelo;
 import Modelos.SeguimientoModelo;
+import Modelos.TraerTodoAsistenciaModelo;
 import Scenes.LoginScene;
 import com.ecodeup.jdbc.Conexion;
 import javafx.application.Application;

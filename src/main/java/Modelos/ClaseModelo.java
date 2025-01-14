@@ -96,8 +96,35 @@ public class ClaseModelo extends General implements Modelos<Clase>
     }
 
     @Override
-    public int traerIdUltimoRegistroBDD() {
-        return 0;
+    public int traerIdUltimoRegistroBDD()
+    {
+        Connection connection = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        int lastID = -1;
+        String sql = "SELECT id FROM clases ORDER BY id DESC LIMIT 1";
+        try {
+            connection = DriverManager.getConnection(dbURL, username, password);
+            statement = connection.createStatement();
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                lastID = resultSet.getInt("id");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if(connection != null) connection.close();
+                if(resultSet != null) resultSet.close();
+                if(statement != null) statement.close();
+                if(preparedStatement != null) preparedStatement.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return lastID;
     }
 
     @Override

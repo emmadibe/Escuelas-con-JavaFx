@@ -4,6 +4,7 @@ import ClasesPrincipales.ArrayListGenerico;
 import ClasesPrincipales.TraerTodo;
 import ClasesPrincipales.TraerTodoLaParteExamenes;
 import ClasesPrincipales.TraerTodoPasandoNotasADiccionario;
+import Excepciones.ArrayListVacioException;
 import Modelos.General;
 import Modelos.TraerTodoModelo;
 import javafx.collections.FXCollections;
@@ -42,7 +43,11 @@ public class TraerTodoControlador {
 
         // Cargar datos y crear columnas dinámicas
         this.setArrayListTraerTodo(TraerTodoModelo.traerATodos(this.getCursoID())); //Ya tengo todos los registros de mi BDD en el formato original, que no sirve.
-        this.setTTPND(TTPasandoNotas.pasarNotasADiccionario(this.getArrayListTraerTodo())); //Convierto el arrayList original a otro nuevo, con un mejor formato en donde tengo tantos registros como alumnos posea el curso. Es un formato de guardar los datos más sencillo para trabajar.
+        this.setTTPND(TTPasandoNotas.pasarNotasADiccionario(this.getArrayListTraerTodo())); //Convierto el arrayList original a otro nuevo, con un mejor formato en donde tengo tantos registros como alumnos posea el curso. Es un formato de guardar los datos más sencillo para trabajar.Y dentro de ese arrayList nuevo hay, como atributo, una colección de tipo diccionario(HashMap) en donde la clave es el examen; y el valor, la nota.
+
+
+        //Columnas:
+
         this.setArrayListColumnas(this.crearColumnasDinamicas()); //Tengo mis columnas, NO mis registros. O sea, los nombres de las columnas sin valores en las filas.
 
         // Agregar columnas a la tabla

@@ -61,6 +61,11 @@ public class TablaIntermediaAsistenciaEstudiantesXClaseControlador implements Co
         return TIAEXCM.traerIDUltimoRegistro();
     }
 
+    public static boolean existenregistrosParaCursoID(int cursoID)
+    {
+        return TablaIntermediaAsistenciaEstudiantesXClasesModelo.existenRegistrosParaCursoID(cursoID);
+    }
+
     public void cargarTodo(Curso curso, int claseID) //En este método voy a cargar todos los registros de Asistencia. Cuando se crea una nueva clase se debe, de forma automática, crear todos los registros intermedios entre dicha clase y cada estudiante del curso para ver si asistió o no.
     {
         //Primero, debo ver cómo hago para traerme un arrayList con todos los estudiantes que compartan curso:

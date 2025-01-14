@@ -3,6 +3,7 @@ package Scenes;
 import ClasesPrincipales.*;
 import Controladores.ClaseControlador;
 import Controladores.TablaIntermediaAsistenciaEstudiantesXClaseControlador;
+import Controladores.TraerTodoAsistenciaControlador;
 import Interfaces.Escenas;
 import NodosControladores.MetodosGeneralesFx;
 import javafx.scene.Scene;
@@ -25,7 +26,7 @@ public class VerAsistenciasScene extends VBox implements Escenas
     private Button buttonAgregarClase;
     private VBox vBox;
     private HBox hboxCajaBotones;
-    private TableView<TraerTodoAsistencia> tableViewTraerTodoAsistencia;
+    private TableView<TraerTodoAsistenciaPasandoFechaADiccionario> tableViewTraerTodoAsistencia;
 
     public VerAsistenciasScene(Curso curso)
     {
@@ -66,8 +67,16 @@ public class VerAsistenciasScene extends VBox implements Escenas
         this.setLabelTablaTitulo(MetodosGeneralesFx.crearLabel("Asistencia"));
         this.getLabelTablaTitulo().setStyle("-fx-font-weight: bold; -fx-font-size: 18px;");
 
-        //Agrego los nodos a mi layputs:
-        this.getvBox().getChildren().addAll(this.getLabelCurso(), this.getLabelTablaTitulo(), this.getHboxCajaBotones(), this.getLabelClaseAgregadaConExito() );
+        //Traer todas las asistencias:
+        if(TraerTodoAsistenciaControlador.esPosibleCrearTabla(this.getCurso().getID())){ //Debo corroborar que se pueda mostrar la tabla
+            TraerTodoAsistenciaControlador TTAC = new TraerTodoAsistenciaControlador(this.getCurso().getID());
+            this.setTableViewTraerTodoAsistencia(TTAC.agregarDatosALaTabla());
+            //Agrego los nodos a mi layputs con la TablaView:
+            this.getvBox().getChildren().addAll(this.getLabelCurso(), this.getLabelTablaTitulo(), this.tableViewTraerTodoAsistencia, this.getHboxCajaBotones(), this.getLabelClaseAgregadaConExito() );
+        }else{
+            //Agrego los nodos a mi layputs sin la TablaView:
+            this.getvBox().getChildren().addAll(this.getLabelCurso(), this.getLabelTablaTitulo(), this.getHboxCajaBotones(), this.getLabelClaseAgregadaConExito() );
+        }
 
         ////////////////////////////ESCENA
         Scene scene = new Scene(this.getvBox(), 800, 600);
@@ -90,7 +99,8 @@ public class VerAsistenciasScene extends VBox implements Escenas
             MetodosGeneralesFx.animacionEtiqueta(this.getLabelClaseAgregadaConExito(), textoLabel);
             //Ahora debo crear los registros en la tabla intermedia:
             TablaIntermediaAsistenciaEstudiantesXClaseControlador TIAEXCC = new TablaIntermediaAsistenciaEstudiantesXClaseControlador();
-            int claseID = TIAEXCC.traerIdUltimoRegistro(); //Necesito traerme el id de la clase que acabo de crear.
+            int claseID = claseControlador.traerIdUltimoRegistro(); //Necesito traerme el id de la clase que acabo de crear.
+            System.out.println("ULTIMO ID " + claseID);
             TIAEXCC.cargarTodo(this.getCurso(), claseID); //Listo, ya tengo a todos los registros de la tabla intermedia creados
         });
         return scene;
@@ -154,11 +164,11 @@ public class VerAsistenciasScene extends VBox implements Escenas
         this.hboxCajaBotones = hboxCajaBotones;
     }
 
-    public TableView<TraerTodoAsistencia> getTableViewTraerTodoAsistencia() {
+    public TableView<TraerTodoAsistenciaPasandoFechaADiccionario> getTableViewTraerTodoAsistencia() {
         return tableViewTraerTodoAsistencia;
     }
 
-    public void setTableViewTraerTodoAsistencia(TableView<TraerTodoAsistencia> tableViewTraerTodoAsistencia) {
+    public void setTableViewTraerTodoAsistencia(TableView<TraerTodoAsistenciaPasandoFechaADiccionario> tableViewTraerTodoAsistencia) {
         this.tableViewTraerTodoAsistencia = tableViewTraerTodoAsistencia;
     }
 

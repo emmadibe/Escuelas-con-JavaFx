@@ -57,8 +57,9 @@ public class ClaseControlador implements Controladores<Clase>
     }
 
     @Override
-    public int traerIdUltimoRegistro() {
-        return 0;
+    public int traerIdUltimoRegistro()
+    {
+        return claseModelo.traerIdUltimoRegistroBDD();
     }
 
     @Override

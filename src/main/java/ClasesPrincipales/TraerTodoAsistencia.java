@@ -17,6 +17,16 @@ public class TraerTodoAsistencia
         this.setCursoID(cursoID);
     }
 
+    @Override
+    public String toString() {
+        return "TraerTodoAsistencia{" +
+                "cursoID=" + cursoID +
+                ", nombreYapellidoAlumno='" + nombreYapellidoAlumno + '\'' +
+                ", fechaClase=" + fechaClase +
+                ", asistio=" + asistio +
+                '}';
+    }
+
     public int getCursoID() {
         return cursoID;
     }
