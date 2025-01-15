@@ -73,8 +73,8 @@ public class TraerTodoAsistenciaControlador
         ArrayListGenerico<TraerTodoAsistenciaLaParteFecha> arrayListfecha = new ArrayListGenerico<>(); //ArrayList de fechas. Es un arrayList auxiliar creado para garantizar que no se repitan columnas-fechas en mi tabla.
         for(int i = 0; i < this.getTraerTodoAsistenciaArrayListGenerico().tamanio(); i++){ //Itero el arrayList que contiene a todos los registros de la BDD.
             LocalDate fechaClase = this.getTraerTodoAsistenciaArrayListGenerico().retornarUnElementoPorPosicion(i).getFechaClase(); //Almaceno la fecha del presente registro.
-            if(!arrayListfecha.contieneElemento(fechaClase)){ //Si el arrayList auxiliar NO contiene la fecha...
-                TraerTodoAsistenciaLaParteFecha TTPF = new TraerTodoAsistenciaLaParteFecha(fechaClase);
+            TraerTodoAsistenciaLaParteFecha TTPF = new TraerTodoAsistenciaLaParteFecha(fechaClase); //Debo pasar al condicional una instancia de Traer...
+            if(!arrayListfecha.contieneElemento(TTPF)){ //Si el arrayList auxiliar NO contiene la fecha...
                 arrayListfecha.agregar(TTPF); //Agrego la fecha al arrayListAuxiliar.
                 TableColumn<TraerTodoAsistenciaPasandoFechaADiccionario, HashMap<LocalDate, Boolean>> columnDinamica = new TableColumn<>(fechaClase.toString()); //Creo una nueva columna que tendrá, como título, la fecha de la clase.
                 columnDinamica.setCellValueFactory(new PropertyValueFactory<>("asistio"));
