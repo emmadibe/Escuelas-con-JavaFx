@@ -5,7 +5,10 @@ import Controladores.ClaseControlador;
 import Controladores.TablaIntermediaAsistenciaEstudiantesXClaseControlador;
 import Controladores.TraerTodoAsistenciaControlador;
 import Interfaces.Escenas;
+import Modelos.TraerTodoAsistenciaModelo;
 import NodosControladores.MetodosGeneralesFx;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -96,12 +99,17 @@ public class VerAsistenciasScene extends VBox implements Escenas
             Clase clase = new Clase(curso.getID(), fecha);
             ClaseControlador claseControlador = new ClaseControlador();
             claseControlador.agregarUnRegistro(clase); //Agregué un nuevo registro a la BDD.
-            MetodosGeneralesFx.animacionEtiqueta(this.getLabelClaseAgregadaConExito(), textoLabel);
             //Ahora debo crear los registros en la tabla intermedia:
             TablaIntermediaAsistenciaEstudiantesXClaseControlador TIAEXCC = new TablaIntermediaAsistenciaEstudiantesXClaseControlador();
             int claseID = claseControlador.traerIdUltimoRegistro(); //Necesito traerme el id de la clase que acabo de crear.
-            System.out.println("ULTIMO ID " + claseID);
             TIAEXCC.cargarTodo(this.getCurso(), claseID); //Listo, ya tengo a todos los registros de la tabla intermedia creados
+            // Refrezco la escena:
+            VerAsistenciasScene VAS = new VerAsistenciasScene(this.getCurso());
+            Scene scene1 = VAS.crear();
+            Stage stage = (Stage) scene.getWindow();
+            stage.setScene(scene1);
+            //Animación Label
+            MetodosGeneralesFx.animacionEtiqueta(this.getLabelClaseAgregadaConExito(), textoLabel);
         });
         return scene;
     }
