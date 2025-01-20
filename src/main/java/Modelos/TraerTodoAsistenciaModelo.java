@@ -20,7 +20,8 @@ public class TraerTodoAsistenciaModelo extends General
         String sql = "SELECT \n" +
                 "    CONCAT(e.nombre, ' ', e.apellido) AS nombreYapellido,\n" +
                 "    c.fecha,\n" +
-                "    ti.asistio\n" +
+                "    ti.asistio,\n" +
+                "ti.id\n" +
                 "FROM estudiantes e \n" +
                 "INNER JOIN tablaIntermediaAsistenciaEstudiantesXClases ti ON ti.estudianteID = e.id\n" +
                 "INNER JOIN clases c ON c.id = ti.claseID\n" +
@@ -34,8 +35,9 @@ public class TraerTodoAsistenciaModelo extends General
             while (resultSet.next()){
                 String nombreYApellido = resultSet.getString("nombreYapellido");
                 LocalDate fecha = resultSet.getDate("fecha").toLocalDate(); //Transformo la fecha del formato sql al formato LocalDate.
+                int TablaIntermediaID = resultSet.getInt("id");
                 boolean asistio = ((resultSet.getInt("asistio") == 1) ? true : false);
-                TraerTodoAsistencia traerTodoAsistencia = new TraerTodoAsistencia(cursoID, nombreYApellido, fecha, asistio);
+                TraerTodoAsistencia traerTodoAsistencia = new TraerTodoAsistencia(TablaIntermediaID, cursoID, nombreYApellido, fecha, asistio);
                 arrayListTraerTodoAsistencia.agregar(traerTodoAsistencia); //Y, así, voy agregando cada registro a mi arrayList.
             }
         }catch (SQLException e){

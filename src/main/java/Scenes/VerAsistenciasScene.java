@@ -29,11 +29,13 @@ public class VerAsistenciasScene extends VBox implements Escenas
     private Button buttonAgregarClase;
     private VBox vBox;
     private HBox hboxCajaBotones;
+    private Stage stage;
     private TableView<TraerTodoAsistenciaPasandoFechaADiccionario> tableViewTraerTodoAsistencia;
 
-    public VerAsistenciasScene(Curso curso)
+    public VerAsistenciasScene(Curso curso, Stage stage)
     {
         this.setCurso(curso);
+        this.setStage(stage);
     }
 
     @Override
@@ -72,7 +74,7 @@ public class VerAsistenciasScene extends VBox implements Escenas
 
         //Traer todas las asistencias:
         if(TraerTodoAsistenciaControlador.esPosibleCrearTabla(this.getCurso().getID())){ //Debo corroborar que se pueda mostrar la tabla
-            TraerTodoAsistenciaControlador TTAC = new TraerTodoAsistenciaControlador(this.getCurso().getID());
+            TraerTodoAsistenciaControlador TTAC = new TraerTodoAsistenciaControlador(this.getCurso(), this.getStage());
             this.setTableViewTraerTodoAsistencia(TTAC.agregarDatosALaTabla());
             //Agrego los nodos a mi layputs con la TablaView:
             this.getvBox().getChildren().addAll(this.getLabelCurso(), this.getLabelTablaTitulo(), this.tableViewTraerTodoAsistencia, this.getHboxCajaBotones(), this.getLabelClaseAgregadaConExito() );
@@ -104,7 +106,7 @@ public class VerAsistenciasScene extends VBox implements Escenas
             int claseID = claseControlador.traerIdUltimoRegistro(); //Necesito traerme el id de la clase que acabo de crear.
             TIAEXCC.cargarTodo(this.getCurso(), claseID); //Listo, ya tengo a todos los registros de la tabla intermedia creados
             // Refrezco la escena:
-            VerAsistenciasScene VAS = new VerAsistenciasScene(this.getCurso());
+            VerAsistenciasScene VAS = new VerAsistenciasScene(this.getCurso(), this.getStage());
             Scene scene1 = VAS.crear();
             Stage stage = (Stage) scene.getWindow();
             stage.setScene(scene1);
@@ -186,5 +188,13 @@ public class VerAsistenciasScene extends VBox implements Escenas
 
     public void setLabelClaseAgregadaConExito(Label labelClaseAgregadaConExito) {
         this.labelClaseAgregadaConExito = labelClaseAgregadaConExito;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }

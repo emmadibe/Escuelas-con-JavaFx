@@ -127,4 +127,33 @@ public class TablaIntermediaAsistenciaEstudiantesXClasesModelo extends General
         }
         return existe;
     }
+
+    public static void update (int id, byte asistioNuevo)
+    {
+        Connection connection = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        String sql = "UPDATE tablaintermediaasistenciaestudiantesxclases " +
+                    "SET " +
+                    "asistio = ? " +
+                    "WHERE id = ?;";
+        try {
+            connection = DriverManager.getConnection(dbURL, username, password);
+            statement = connection.createStatement();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setByte(1, asistioNuevo);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if(connection != null) connection.close();
+                if(statement != null) statement.close();
+                if(preparedStatement != null) preparedStatement.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
 }

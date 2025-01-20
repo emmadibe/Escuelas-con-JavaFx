@@ -174,7 +174,7 @@ public class VerCursoScene extends VBox implements Escenas
         //Button asistencias:
         this.getButtonAsistencia().setOnAction(e -> {
             Stage stage = (Stage) scene.getWindow();
-            VerAsistenciasScene verAsistenciasScene = new VerAsistenciasScene(this.getCurso());
+            VerAsistenciasScene verAsistenciasScene = new VerAsistenciasScene(this.getCurso(),stage);
             stage.setScene(verAsistenciasScene.crear());
         });
         return scene;

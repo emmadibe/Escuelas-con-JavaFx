@@ -7,6 +7,12 @@ public class TablaIntermediaAsistenciaEstudiantesXClases
     private int claseID;
     private byte asistio;
 
+    public TablaIntermediaAsistenciaEstudiantesXClases (int id, byte asistio)
+    {
+        this.setAsistio(asistio);
+        this.setId(id);
+    }
+
     public TablaIntermediaAsistenciaEstudiantesXClases(int estudianteID, int claseID, byte asistio)
     {
         this.setAsistio(asistio);

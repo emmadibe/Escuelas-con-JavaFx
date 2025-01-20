@@ -32,8 +32,11 @@ public class TablaIntermediaAsistenciaEstudiantesXClaseControlador implements Co
     }
 
     @Override
-    public void editarRegistro(TablaIntermediaAsistenciaEstudiantesXClases tablaIntermediaAsistenciaEstudiantesXClases) {
-
+    public void editarRegistro(TablaIntermediaAsistenciaEstudiantesXClases tablaIntermediaAsistenciaEstudiantesXClases)
+    {
+        int id = tablaIntermediaAsistenciaEstudiantesXClases.getId();
+        byte asistioNuevo = tablaIntermediaAsistenciaEstudiantesXClases.getAsistio();
+        TablaIntermediaAsistenciaEstudiantesXClasesModelo.update(id,asistioNuevo);
     }
 
     @Override

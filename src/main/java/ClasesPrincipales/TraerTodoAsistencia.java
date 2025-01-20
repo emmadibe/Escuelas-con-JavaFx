@@ -8,13 +8,15 @@ public class TraerTodoAsistencia
     private String nombreYapellidoAlumno;
     private LocalDate fechaClase;
     private boolean asistio;
+    private int tablaIntermediaID;
 
-    public TraerTodoAsistencia(int cursoID, String nombreYapellidoAlumno, LocalDate fechaClase, boolean asistio)
+    public TraerTodoAsistencia(int tablaIntermediaID, int cursoID, String nombreYapellidoAlumno, LocalDate fechaClase, boolean asistio)
     {
         this.setAsistio(asistio);
         this.setFechaClase(fechaClase);
         this.setNombreYapellidoAlumno(nombreYapellidoAlumno);
         this.setCursoID(cursoID);
+        this.setTablaIntermediaID(tablaIntermediaID);
     }
 
     @Override
@@ -57,5 +59,13 @@ public class TraerTodoAsistencia
 
     public void setAsistio(boolean asistio) {
         this.asistio = asistio;
+    }
+
+    public int getTablaIntermediaID() {
+        return tablaIntermediaID;
+    }
+
+    public void setTablaIntermediaID(int tablaIntermediaID) {
+        this.tablaIntermediaID = tablaIntermediaID;
     }
 }

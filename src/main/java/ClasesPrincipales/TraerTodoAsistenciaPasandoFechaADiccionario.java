@@ -9,13 +9,13 @@ import java.util.Objects;
 public class TraerTodoAsistenciaPasandoFechaADiccionario
 {
     private String nombreYapellidoAlumno;
-    private HashMap<LocalDate, Boolean> asistioMapa;
+    private HashMap<LocalDate, AsistioYTablaIntermediaID> asistioMapa;
 
     public ArrayListGenerico<TraerTodoAsistenciaPasandoFechaADiccionario> arrayListFechasDic = new ArrayListGenerico<>(); //Es un arrayList en donde cada elemento es una instancia de TraerTodoAsistenciaPAsandoFechaADiccionario.
 
     public TraerTodoAsistenciaPasandoFechaADiccionario(){}
 
-    public TraerTodoAsistenciaPasandoFechaADiccionario(String nombreYapellidoAlumno, HashMap<LocalDate, Boolean> hasMapFechas)
+    public TraerTodoAsistenciaPasandoFechaADiccionario(String nombreYapellidoAlumno, HashMap<LocalDate, AsistioYTablaIntermediaID> hasMapFechas)
     {
         this.setAsistioMapa(hasMapFechas);
         this.setNombreYapellidoAlumno(nombreYapellidoAlumno);
@@ -27,14 +27,16 @@ public class TraerTodoAsistenciaPasandoFechaADiccionario
             String nombreYApellido = arrayListOriginal.retornarUnElementoPorPosicion(i).getNombreYapellidoAlumno();
             LocalDate fecha = arrayListOriginal.retornarUnElementoPorPosicion(i).getFechaClase();
             boolean asistio = arrayListOriginal.retornarUnElementoPorPosicion(i).isAsistio();
+            int tablaIntermediaID = arrayListOriginal.retornarUnElementoPorPosicion(i).getTablaIntermediaID();
+            AsistioYTablaIntermediaID asistioYTablaIntermediaID = new AsistioYTablaIntermediaID(tablaIntermediaID, asistio);
             int existe = this.buscarNombreAlumno(this.arrayListFechasDic, nombreYApellido);
             if(existe == -1){//Si retorna -1, no existe un elemento en el arrayList que contenga ese nombre como atributo. Si existe, retorna el índice en donde se encuentra.
-                HashMap<LocalDate, Boolean> fechaMapa = new HashMap<>();
-                fechaMapa.put(fecha, asistio);
+                HashMap<LocalDate, AsistioYTablaIntermediaID> fechaMapa = new HashMap<>();
+                fechaMapa.put(fecha, asistioYTablaIntermediaID);
                 TraerTodoAsistenciaPasandoFechaADiccionario TTPFD = new TraerTodoAsistenciaPasandoFechaADiccionario(nombreYApellido, fechaMapa);
                 this.arrayListFechasDic.agregar(TTPFD);
             }else{
-                this.arrayListFechasDic.retornarUnElementoPorPosicion(existe).getAsistioMapa().put(fecha, asistio); //Si ya existe el alumnop, debo agregar la clase y la asistencia y en el índice que está dicho alumno.
+                this.arrayListFechasDic.retornarUnElementoPorPosicion(existe).getAsistioMapa().put(fecha, asistioYTablaIntermediaID); //Si ya existe el alumnop, debo agregar la clase y la asistencia y en el índice que está dicho alumno.
             }
         }
         return this.arrayListFechasDic;
@@ -71,11 +73,11 @@ public class TraerTodoAsistenciaPasandoFechaADiccionario
         this.nombreYapellidoAlumno = nombreYapellidoAlumno;
     }
 
-    public HashMap<LocalDate, Boolean> getAsistioMapa() {
+    public HashMap<LocalDate, AsistioYTablaIntermediaID> getAsistioMapa() {
         return asistioMapa;
     }
 
-    public void setAsistioMapa(HashMap<LocalDate, Boolean> asistioMapa) {
+    public void setAsistioMapa(HashMap<LocalDate, AsistioYTablaIntermediaID> asistioMapa) {
         this.asistioMapa = asistioMapa;
     }
 }
